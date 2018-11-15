@@ -36,7 +36,7 @@ android {
 }
 
 ext {
-    bintrayRepo = 'maven'
+    bintrayRepo = 'pkostecki'
     bintrayName = 'com.coinpaprika.apiclient'
 
     publishedGroupId = 'com.coinpaprika'
@@ -50,7 +50,7 @@ ext {
 
     libraryVersion = '0.0.1'
 
-    developerId = 'pkostecki'
+    developerId = 'coinpaprika'
     developerName = 'Piotr Kostecki'
     developerEmail = 'it@greywizard.com'
 
@@ -123,18 +123,18 @@ task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//}
+//
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//
 artifacts {
-    archives javadocJar
+//    archives javadocJar
     archives sourcesJar
 }
 

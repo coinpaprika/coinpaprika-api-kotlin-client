@@ -1,6 +1,6 @@
 # Coinpaprika API Android Client
 
-[![Version](https://img.shields.io/cocoapods/v/CoinpaprikaAPI.svg?style=flat)](https://cocoapods.org/pods/CoinpaprikaAPI)
+[![Version](https://img.shields.io/badge/Version-0.0.1-blue.svg)](https://coinpaprika.com/pl/)
 [![License](https://img.shields.io/cocoapods/l/CoinpaprikaAPI.svg?style=flat)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/Platform-Android-blue.svg?style=flat)](https://developer.android.com/about/)
 ![Kotlin 1.2.71](https://img.shields.io/badge/Kotlin-1.2.71-orange.svg)
@@ -14,9 +14,9 @@ This library is written in Kotlin and provides the way to retrieve data from [Co
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 ```
 
-2. Attach the library by adding this line into your module's dependencies
+2. Edit module's build.gradle file to attach the library by adding this line into it's dependencies
 ```gradle
-implementation 'com.coinpaprika.apiclient:$library_version'
+implementation 'com.coinpaprika:apiclient:$library_version'
 ```
 
 ## Usage
