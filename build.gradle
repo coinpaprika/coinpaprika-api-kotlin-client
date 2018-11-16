@@ -41,8 +41,8 @@ ext {
 
     libraryDescription = 'This library contains Coinpaprika API Client written in Kotlin.'
 
-    siteUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-clientRx'
-    gitUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-clientRx.git'
+    siteUrl = 'https://github.com/coinpaprika/coinpaprika-api-android-client'
+    gitUrl = 'https://github.com/coinpaprika/coinpaprika-api-android-client.git'
 
     libraryVersion = '0.0.4'
 
