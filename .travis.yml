@@ -11,27 +11,3 @@ android:
 
     # The SDK version used to compile your project
     - android-28
-
-    # Additional components
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
-
-    # Specify at least one system image,
-    # if you need to run emulator(s) during your tests
-    - sys-img-x86-android-26
-    - sys-img-armeabi-v7a-android-17
-
-    script:
-      - ./gradlew build
-    before_install:
-      - chmod +x gradlew
-#    deploy:
-#      provider: bintray
-#      file: "Path to a descriptor file, containing information for the Bintray upload"
-#      user: "coinpaprika"
-#      key: "ae7b5476feb649e0c72042c1494d29515056a0d7"
-#      skip_cleanup: true # to upload artifacts created during the build
-#      on:
-#        all_branches: true
-#      dry_run: true
