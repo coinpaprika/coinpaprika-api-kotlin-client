@@ -15,7 +15,3 @@ android:
     - extra-android-m2repository
     - extra-google-m2repository
     - extra-android-support
-
-    script:
-      - ./gradlew build connectedCheck
-      - ./gradlew clean build
