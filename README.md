@@ -1,4 +1,4 @@
-# Coinpaprika API Android Client
+# Coinpaprika API Kotlin Client
 
 [![Version](https://img.shields.io/badge/Version-0.0.1-blue.svg)](https://coinpaprika.com/pl/)
 [![License](https://img.shields.io/cocoapods/l/CoinpaprikaAPI.svg?style=flat)](https://opensource.org/licenses/MIT)

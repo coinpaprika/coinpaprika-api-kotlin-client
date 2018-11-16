@@ -21,15 +21,12 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -47,7 +44,7 @@ ext {
     siteUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-clientRx'
     gitUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-clientRx.git'
 
-    libraryVersion = '0.0.1'
+    libraryVersion = '0.0.4'
 
     developerId = 'coinpaprika'
     developerName = 'Piotr Kostecki'
@@ -61,8 +58,7 @@ ext {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    
+
     // Networking
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -77,6 +73,8 @@ dependencies {
 
     // Testing
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.10.0'
+    testImplementation 'androidx.test:core:1.0.0'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
