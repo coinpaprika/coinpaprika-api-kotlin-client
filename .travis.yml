@@ -11,3 +11,11 @@ android:
 
     # The SDK version used to compile your project
     - android-28
+
+    - extra-android-m2repository
+    - extra-google-m2repository
+    - extra-android-support
+
+    script:
+      - ./gradlew build connectedCheck
+      - ./gradlew clean build
