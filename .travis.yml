@@ -20,5 +20,5 @@ android:
     script:
             - ./gradlew wrapper --gradle-version 4.6
             - ./gradlew build
-    before_install:
+    before_script:
             - chmod +x gradlew
