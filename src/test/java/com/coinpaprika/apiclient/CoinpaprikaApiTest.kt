@@ -16,6 +16,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import retrofit2.Response
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.BDDMockito.given
+
 
 @RunWith(MockitoJUnitRunner::class)
 class CoinpaprikaApiTest {
@@ -74,8 +76,10 @@ class CoinpaprikaApiTest {
 
     @Test
     fun testGetTickersNetworkConnectionError() {
-        `when`(mockApi.getTickers())
-            .thenThrow(NetworkConnectionException::class.java)
+        given(mockApi.getTickers())
+            .willAnswer {
+                    _ -> throw NetworkConnectionException()
+            }
 
         val client = CoinpaprikaAPI(mockContext, mockApi)
         client.tickers()

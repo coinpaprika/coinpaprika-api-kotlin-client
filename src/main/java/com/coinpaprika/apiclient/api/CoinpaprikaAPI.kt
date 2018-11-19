@@ -14,7 +14,7 @@ open class CoinpaprikaAPI constructor(context: Context,
                                       private var retrofit: CoinpaprikaApiContract = CoinpaprikaApiFactory.client()) :
     BaseApi(context) {
 
-    fun tickers(): Observable<List<TickerEntity>> {
+    open fun tickers(): Observable<List<TickerEntity>> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
@@ -43,7 +43,7 @@ open class CoinpaprikaAPI constructor(context: Context,
         }
     }
 
-    fun coins(): Observable<List<CoinEntity>> {
+    open fun coins(): Observable<List<CoinEntity>> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
