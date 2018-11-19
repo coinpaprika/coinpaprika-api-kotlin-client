@@ -1,5 +1,5 @@
 language: android
-install: true
+sudo: required
 jdk: oraclejdk8
 
 android:
@@ -19,5 +19,7 @@ android:
     - extra-android-m2repository
     - extra-google-m2repository
     - extra-android-support
-before_install:
-  gradle wrapper
+script:
+  - chmod +x gradlew
+  - "./gradlew wrapper --gradle-version 4.6"
+  - "./gradlew build"
