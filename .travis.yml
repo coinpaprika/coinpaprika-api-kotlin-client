@@ -16,3 +16,9 @@ android:
     - extra-android-m2repository
     - extra-google-m2repository
     - extra-android-support
+
+    script:
+            - gradle --gradle-version 4.6 --distribution-type all
+            - ./gradlew build
+    before_install:
+            - chmod +x gradlew
