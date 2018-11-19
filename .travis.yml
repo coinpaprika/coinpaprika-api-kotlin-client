@@ -20,9 +20,8 @@ android:
     - extra-google-m2repository
     - extra-android-support
 
-before_install:
-  - pwd
-  - ls -la
+before_script:
+  - touch local.properties
 script:
   - chmod +x gradlew
   - "./gradlew wrapper --gradle-version 4.6 --continue"
