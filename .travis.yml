@@ -1,5 +1,16 @@
 language: android
 jdk: oraclejdk8
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+  - $HOME/.android/build-cache
+
 android:
   components:
     # Uncomment the lines below if you want to
@@ -17,6 +28,6 @@ android:
     - extra-google-m2repository
     - extra-android-support
 
-    script:
-            - ./gradlew wrapper --gradle-version 4.6
-            - ./gradlew build
+script:
+    - ./gradlew wrapper --gradle-version 4.6
+    - ./gradlew build
