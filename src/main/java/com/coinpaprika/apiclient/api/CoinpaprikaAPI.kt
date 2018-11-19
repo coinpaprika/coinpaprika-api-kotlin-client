@@ -3,16 +3,18 @@ package com.coinpaprika.apiclient.api
 import android.content.Context
 import com.coinpaprika.apiclient.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.CoinEntity
+import com.coinpaprika.apiclient.entity.GlobalStatsEntity
 import com.coinpaprika.apiclient.entity.TickerEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
 import io.reactivex.Observable
 
-class CoinpaprikaAPI constructor(context: Context): BaseApi(context) {
-    private var retrofit = CoinpaprikaApiFactory.client()
+open class CoinpaprikaAPI constructor(context: Context,
+                                      private var retrofit: CoinpaprikaApiContract = CoinpaprikaApiFactory.client())
+    : BaseApi(context) {
 
-    fun tickers(): Observable<List<TickerEntity>> {
+    open fun tickers(): Observable<List<TickerEntity>> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
@@ -41,7 +43,7 @@ class CoinpaprikaAPI constructor(context: Context): BaseApi(context) {
         }
     }
 
-    fun coins(): Observable<List<CoinEntity>> {
+    open fun coins(): Observable<List<CoinEntity>> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {

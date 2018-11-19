@@ -1,16 +1,34 @@
 buildscript {
+    ext.kotlin_version = '1.2.71'
     repositories {
+        google()
         jcenter()
+        mavenCentral()
     }
     dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '4.6'
     }
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 apply plugin: 'kotlin-android'
 
 android {
@@ -21,16 +39,17 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
@@ -44,10 +63,10 @@ ext {
 
     libraryDescription = 'This library contains Coinpaprika API Client written in Kotlin.'
 
-    siteUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-clientRx'
-    gitUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-clientRx.git'
+    siteUrl = 'https://github.com/coinpaprika/coinpaprika-api-android-client'
+    gitUrl = 'https://github.com/coinpaprika/coinpaprika-api-android-client.git'
 
-    libraryVersion = '0.0.1'
+    libraryVersion = '0.0.4'
 
     developerId = 'coinpaprika'
     developerName = 'Piotr Kostecki'
@@ -61,8 +80,7 @@ ext {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    
+
     // Networking
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -77,6 +95,8 @@ dependencies {
 
     // Testing
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.23.0'
+    testImplementation 'androidx.test:core:1.0.0'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
@@ -122,18 +142,7 @@ task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 
-//task javadoc(type: Javadoc) {
-//    source = android.sourceSets.main.java.srcDirs
-//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-//}
-//
-//task javadocJar(type: Jar, dependsOn: javadoc) {
-//    classifier = 'javadoc'
-//    from javadoc.destinationDir
-//}
-//
 artifacts {
-//    archives javadocJar
     archives sourcesJar
 }
 
