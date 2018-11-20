@@ -96,5 +96,4 @@ open class CoinpaprikaAPI constructor(context: Context,
             }
         }
     }
-
 }

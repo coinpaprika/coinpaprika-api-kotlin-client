@@ -30,6 +30,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
@@ -47,9 +48,14 @@ android {
             minifyEnabled false
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    androidExtensions {
+        experimental = true
     }
 }
 
