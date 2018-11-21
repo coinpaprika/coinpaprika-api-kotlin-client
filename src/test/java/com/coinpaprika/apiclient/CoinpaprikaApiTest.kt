@@ -29,9 +29,8 @@ class CoinpaprikaApiTest {
     fun testGetTickersSuccessResult() {
         val tickerEntityList = listOf(
             TickerEntity("1", "Bitcoin", "BTC",
-                1, 8000.56, 1.00, 10056234, 123456789,
-                12345, 12345, 12345, 12.12,
-                12.12, 12.12, "date"))
+                1, 80001256, 100000, 10056234, 123456789.00,
+                "test", emptyMap()))
         val response = Response.success(tickerEntityList)
 
         `when`(mockApi.getTickers())
