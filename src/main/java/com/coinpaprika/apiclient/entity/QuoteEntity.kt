@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class QuoteEntity(@SerializedName("price") val priceUsd: Double,
+data class QuoteEntity(@SerializedName("price") val price: Double,
                        @SerializedName("volume_24h") val dailyVolume: Long,
                        @SerializedName("volume_24h_change_24h") val dailyVolumeDailyChange: Long,
                        @SerializedName("market_cap") val marketCap: Long,
