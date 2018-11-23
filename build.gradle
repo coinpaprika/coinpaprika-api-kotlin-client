@@ -72,7 +72,7 @@ ext {
     siteUrl = 'https://github.com/coinpaprika/coinpaprika-api-android-client'
     gitUrl = 'https://github.com/coinpaprika/coinpaprika-api-android-client.git'
 
-    libraryVersion = '0.0.4'
+    libraryVersion = '0.0.5'
 
     developerId = 'coinpaprika'
     developerName = 'Piotr Kostecki'
