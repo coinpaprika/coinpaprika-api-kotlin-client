@@ -25,17 +25,16 @@ implementation 'com.coinpaprika:apiclient:$library_version'
 
 Instantiate client and proceed with the call:
 ```kotlin
-CoinpaprikaAPI(context).tickers()
+CoinpaprikaAPI(this)
+            .tickers()
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-                for (ticker in it) {
-                    i("ExampleActivity", "Ticker name is ${ticker.name} ")
-                }
-            }
-            .doOnComplete { /* nop */ }
             .doOnError { error -> error.printStackTrace() }
-            .subscribe()
+            .subscribe(
+                { next -> for (ticker in next) {
+                    i("ExampleActivity", "Ticker name is ${ticker.name} ")
+                }},
+                { error -> error.printStackTrace() })
 ```
 
 ### Tickers
@@ -61,6 +60,18 @@ CoinpaprikaAPI(context).tickers()
         }
     }
     .doOnError { error -> /* handle an error */ }
+```
+
+### Graph API
+In order to request the cryptocurrency graph (.svg) instantiate graph client and proceed with the call:
+```kotlin
+GraphsAPI(this)
+            .chartSvg("unique_cryptocurrency_id", GraphPeriods.DAILY.period)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { next -> Log.i("ExampleActivity", "Example SVG file: $next") },
+                { error -> error.printStackTrace() })
 ```
 
 ## License

@@ -32,7 +32,7 @@ open class CoinpaprikaAPI constructor(context: Context,
                                 }
                             }
                         }
-                        .subscribe({_ -> }, {error -> error.printStackTrace()})
+                        .subscribe({}, {error -> error.printStackTrace()})
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
