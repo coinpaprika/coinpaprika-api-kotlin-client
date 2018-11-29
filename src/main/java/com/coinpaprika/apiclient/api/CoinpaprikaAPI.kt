@@ -12,7 +12,7 @@ import com.coinpaprika.apiclient.exception.TooManyRequestsError
 import io.reactivex.Observable
 
 open class CoinpaprikaAPI constructor(context: Context,
-                                      private var retrofit: CoinpaprikaApiContract = CoinpaprikaApiFactory.client())
+                                      private var retrofit: CoinpaprikaApiContract = CoinpaprikaApiFactory(context).client())
     : BaseApi(context) {
 
     open fun tickers(): Observable<List<TickerEntity>> {

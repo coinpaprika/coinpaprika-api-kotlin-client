@@ -14,7 +14,7 @@ import com.coinpaprika.apiclient.exception.ServerConnectionError
 import io.reactivex.Observable
 
 open class GraphsAPI constructor(context: Context,
-                                 private var retrofit: CoinpaprikaGraphsApiContract = CoinpaprikaApiFactory.graphs())
+                                 private var retrofit: CoinpaprikaGraphsApiContract = CoinpaprikaApiFactory(context).graphs())
     : BaseApi(context) {
 
     open fun chartSvg(cryptocurrencyId: String, period: String): Observable<String> {
