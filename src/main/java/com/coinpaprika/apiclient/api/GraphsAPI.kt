@@ -32,6 +32,8 @@ open class GraphsAPI constructor(context: Context,
                                 }
                             }
                         }
+                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
+                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
                         .subscribe({}, {error -> error.printStackTrace()})
                 } catch (e: Exception) {
                     e.printStackTrace()

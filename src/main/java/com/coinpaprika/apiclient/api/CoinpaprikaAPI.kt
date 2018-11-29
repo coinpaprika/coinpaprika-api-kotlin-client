@@ -4,6 +4,7 @@ import android.content.Context
 import com.coinpaprika.apiclient.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.CoinEntity
 import com.coinpaprika.apiclient.entity.GlobalStatsEntity
+import com.coinpaprika.apiclient.entity.TagEntity
 import com.coinpaprika.apiclient.entity.TickerEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
@@ -32,6 +33,8 @@ open class CoinpaprikaAPI constructor(context: Context,
                                 }
                             }
                         }
+                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
+                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
                         .subscribe({}, {error -> error.printStackTrace()})
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -60,6 +63,39 @@ open class CoinpaprikaAPI constructor(context: Context,
                                 }
                             }
                         }
+                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
+                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
+                        .subscribe({}, {error -> error.printStackTrace()})
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    emitter.onError(NetworkConnectionException(e.cause))
+                }
+            } else {
+                emitter.onError(NetworkConnectionException())
+            }
+        }
+    }
+
+    open fun tags(): Observable<List<TagEntity>> {
+        return Observable.create { emitter ->
+            if (isThereInternetConnection()) {
+                try {
+                    retrofit.getTags()
+                        .doOnNext {
+                            if (!emitter.isDisposed) {
+                                if (it.isSuccessful) {
+                                    emitter.onNext(it.body()!!)
+                                } else {
+                                    when (it.code()) {
+                                        429 -> emitter.onError(TooManyRequestsError())
+                                        else -> emitter.onError(ServerConnectionError())
+                                    }
+                                }
+                            }
+                        }
+                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
+                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
+                        .subscribe({}, {error -> error.printStackTrace()})
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
