@@ -7,10 +7,14 @@ import com.coinpaprika.apiclient.entity.TickerEntity
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface CoinpaprikaApiContract {
     @GET("tickers")
     fun getTickers(): Observable<Response<List<TickerEntity>>>
+
+    @GET("coins/{id}")
+    fun getCoin(@Path("id") id: String): Observable<Response<CoinEntity>>
 
     @GET("coins")
     fun getCoins(): Observable<Response<List<CoinEntity>>>
