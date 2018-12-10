@@ -1,9 +1,6 @@
 package com.coinpaprika.apiclient.api
 
-import com.coinpaprika.apiclient.entity.CoinEntity
-import com.coinpaprika.apiclient.entity.GlobalStatsEntity
-import com.coinpaprika.apiclient.entity.TagEntity
-import com.coinpaprika.apiclient.entity.TickerEntity
+import com.coinpaprika.apiclient.entity.*
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.GET
@@ -18,6 +15,9 @@ interface CoinpaprikaApiContract {
 
     @GET("coins")
     fun getCoins(): Observable<Response<List<CoinEntity>>>
+
+    @GET("coins/{id}/events/")
+    fun getEvents(@Path("id") id: String): Observable<Response<List<EventEntity>>>
 
     @GET("global")
     fun getGlobal(): Observable<Response<GlobalStatsEntity>>

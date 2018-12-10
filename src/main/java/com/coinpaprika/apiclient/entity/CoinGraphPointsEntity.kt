@@ -9,6 +9,6 @@ package com.coinpaprika.apiclient.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class CoinGraphPointsEntity(val usd: List<GraphPointEntity>,
-                                 @SerializedName("market_cap") val marketCap: List<GraphPointEntity>,
-                                 val volume: List<GraphPointEntity>)
+data class CoinGraphPointsEntity(val usd: MutableList<GraphPointEntity>,
+                                 @SerializedName("market_cap") val marketCap: MutableList<GraphPointEntity>,
+                                 val volume: MutableList<GraphPointEntity>)

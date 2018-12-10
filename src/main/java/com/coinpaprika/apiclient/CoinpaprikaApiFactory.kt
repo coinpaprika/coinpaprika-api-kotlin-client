@@ -3,8 +3,8 @@ package com.coinpaprika.apiclient
 import android.content.Context
 import com.coinpaprika.apiclient.api.CoinpaprikaApiContract
 import com.coinpaprika.apiclient.api.CoinpaprikaGraphsApiContract
+import com.coinpaprika.apiclient.api.CoinpaprikaOembedApiContract
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import okhttp3.Cache
 import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -39,12 +39,25 @@ class CoinpaprikaApiFactory(context: Context) {
         return Retrofit.Builder()
             .baseUrl(GRAPHS_URL)
             .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(createClient()
                 .addInterceptor(createLoggingInterceptor())
                 .build())
             .build()
             .create(CoinpaprikaGraphsApiContract::class.java)
+    }
+
+    fun oembed(baseUrl: String): CoinpaprikaOembedApiContract {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(createClient()
+                .addInterceptor(createLoggingInterceptor())
+                .build())
+            .build()
+            .create(CoinpaprikaOembedApiContract::class.java)
     }
 
     private fun createClient(): OkHttpClient.Builder {

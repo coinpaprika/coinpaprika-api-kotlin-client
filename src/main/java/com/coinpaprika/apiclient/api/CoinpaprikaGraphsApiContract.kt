@@ -7,6 +7,7 @@
 
 package com.coinpaprika.apiclient.api
 
+import com.coinpaprika.apiclient.entity.RawCoinGraphPointsEntity
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,4 +17,8 @@ interface CoinpaprikaGraphsApiContract {
     @GET("currency/chart/{cryptocurrencyId}/{period}/svg")
     fun getChartSVG(@Path("cryptocurrencyId") cryptocurrencyId: String,
                    @Path("period") period: String): Observable<Response<String>>
+
+    @GET("currency/data/{cryptocurrencyId}/{period}/")
+    fun getGraphData(@Path("cryptocurrencyId") cryptocurrencyId: String,
+                    @Path("period") period: String): Observable<Response<List<RawCoinGraphPointsEntity>>>
 }

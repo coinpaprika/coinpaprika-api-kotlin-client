@@ -18,6 +18,7 @@ data class CoinEntity(val id: String,
                       @SerializedName("org_structure") val organizationStructure: String,
                       @SerializedName("hash_algorithm") val algorithm: String,
                       val tags: List<TagEntity>?,
+                      val type: String,
                       val team: List<TeamMemberEntity>?,
                       val links: LinksEntity,
                       val whitepaper: WhitepaperEntity?)

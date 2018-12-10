@@ -11,5 +11,8 @@ enum class GraphPeriods(val period: String) {
     DAILY("24h"),
     WEEKLY("7d"),
     MONTHLY("30d"),
-    YEARLY("1y")
+    QUARTERLY("1q"),
+    YEARLY("1y"),
+    YTD("ytd"),
+    MAX("all")
 }
