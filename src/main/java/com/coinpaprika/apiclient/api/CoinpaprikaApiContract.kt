@@ -19,6 +19,12 @@ interface CoinpaprikaApiContract {
     @GET("coins/{id}/events/")
     fun getEvents(@Path("id") id: String): Observable<Response<List<EventEntity>>>
 
+    @GET("coins/{id}/exchanges/")
+    fun getExchanges(@Path("id") id: String): Observable<Response<List<ExchangeEntity>>>
+
+    @GET("coins/{id}/markets/")
+    fun getMarkets(@Path("id") id: String): Observable<Response<List<MarketEntity>>>
+
     @GET("global")
     fun getGlobal(): Observable<Response<GlobalStatsEntity>>
 

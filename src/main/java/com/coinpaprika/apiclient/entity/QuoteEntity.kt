@@ -13,7 +13,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class QuoteEntity(@SerializedName("price") val price: Double,
-                       @SerializedName("volume_24h") val dailyVolume: Long,
+                       @SerializedName("volume_24h") val dailyVolume: Double,
                        @SerializedName("volume_24h_change_24h") val dailyVolumeDailyChange: Double,
                        @SerializedName("market_cap") val marketCap: Long,
                        @SerializedName("market_cap_change_24h") val marketCapDailyChange: Double,
