@@ -30,4 +30,7 @@ interface CoinpaprikaApiContract {
 
     @GET("tags?additional_fields=coins")
     fun getTags(): Observable<Response<List<TagEntity>>>
+
+    @GET("coins/{id}/twitter/")
+    fun getTweets(@Path("id") id: String): Observable<Response<List<TweetEntity>>>
 }
