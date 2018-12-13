@@ -1,7 +1,10 @@
 package com.coinpaprika.apiclient.entity
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class CoinEntity(val id: String,
                       val name: String,
                       val symbol: String,
@@ -21,4 +24,4 @@ data class CoinEntity(val id: String,
                       val type: String,
                       val team: List<TeamMemberEntity>?,
                       val links: LinksEntity,
-                      val whitepaper: WhitepaperEntity?)
+                      val whitepaper: WhitepaperEntity?): Parcelable

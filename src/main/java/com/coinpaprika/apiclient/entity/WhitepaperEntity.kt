@@ -7,5 +7,9 @@
 
 package com.coinpaprika.apiclient.entity
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class WhitepaperEntity(val link: String?,
-                            val thumbnail: String?)
+                            val thumbnail: String?): Parcelable

@@ -4,6 +4,7 @@ import android.content.Context
 import com.coinpaprika.apiclient.api.CoinpaprikaApiContract
 import com.coinpaprika.apiclient.api.CoinpaprikaGraphsApiContract
 import com.coinpaprika.apiclient.api.CoinpaprikaOembedApiContract
+import com.coinpaprika.apiclient.api.CoinpaprikaRedditApiContract
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.ConnectionPool
 import okhttp3.Interceptor
@@ -18,6 +19,7 @@ class CoinpaprikaApiFactory(context: Context) {
     companion object {
         private const val BASE_URL = "https://api.coinpaprika.com/v1/"
         private const val GRAPHS_URL = "https://graphs.coinpaprika.com/"
+        const val REDDIT_URL = "https://www.reddit.com/"
     }
 
 //    var cacheSize = 10 * 1024 * 1024 // 10 MB
@@ -58,6 +60,18 @@ class CoinpaprikaApiFactory(context: Context) {
                 .build())
             .build()
             .create(CoinpaprikaOembedApiContract::class.java)
+    }
+
+    fun reddit(): CoinpaprikaRedditApiContract {
+        return Retrofit.Builder()
+            .baseUrl(REDDIT_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(createClient()
+                .addInterceptor(createLoggingInterceptor())
+                .build())
+            .build()
+            .create(CoinpaprikaRedditApiContract::class.java)
     }
 
     private fun createClient(): OkHttpClient.Builder {
