@@ -253,6 +253,36 @@ open class CoinpaprikaAPI constructor(context: Context,
         }
     }
 
+    open fun person(id: String): Observable<PersonEntity> {
+        return Observable.create { emitter ->
+            if (isThereInternetConnection()) {
+                try {
+                    retrofit.getPerson(id)
+                        .doOnNext {
+                            if (!emitter.isDisposed) {
+                                if (it.isSuccessful) {
+                                    emitter.onNext(it.body()!!)
+                                } else {
+                                    when (it.code()) {
+                                        429 -> emitter.onError(TooManyRequestsError())
+                                        else -> emitter.onError(ServerConnectionError())
+                                    }
+                                }
+                            }
+                        }
+                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
+                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
+                        .subscribe({}, {error -> error.printStackTrace()})
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    emitter.onError(NetworkConnectionException(e.cause))
+                }
+            } else {
+                emitter.onError(NetworkConnectionException())
+            }
+        }
+    }
+
     open fun global() : Observable<GlobalStatsEntity> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {

@@ -8,10 +8,10 @@ import kotlinx.android.parcel.Parcelize
 data class TickerEntity(val id: String,
                         val name: String,
                         val symbol: String,
-                        val rank: Int,
-                        @SerializedName("circulating_supply") val circulatingSupply: Long,
-                        @SerializedName("total_supply") val totalSupply: Long,
-                        @SerializedName("max_supply") val maxSupply: Long,
-                        @SerializedName("beta_value") val betaValue: Double,
-                        @SerializedName("last_updated") val lastUpdated: String,
-                        val quotes: Map<String, QuoteEntity>): Parcelable
+                        val rank: Int = -1,
+                        @SerializedName("circulating_supply") val circulatingSupply: Long = 0,
+                        @SerializedName("total_supply") val totalSupply: Long = 0,
+                        @SerializedName("max_supply") val maxSupply: Long = 0,
+                        @SerializedName("beta_value") val betaValue: Double = 0.0,
+                        @SerializedName("last_updated") val lastUpdated: String = "",
+                        val quotes: Map<String, QuoteEntity> = emptyMap()): Parcelable
