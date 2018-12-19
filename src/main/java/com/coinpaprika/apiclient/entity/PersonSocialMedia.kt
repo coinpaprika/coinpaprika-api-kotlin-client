@@ -11,5 +11,5 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class LinkEntity(val url: String,
-                      val followers: Int?): Parcelable
+data class PersonSocialMedia(val url: String,
+                             val followers: Int?): Parcelable
