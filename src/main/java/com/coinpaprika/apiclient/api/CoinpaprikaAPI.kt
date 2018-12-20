@@ -12,6 +12,37 @@ open class CoinpaprikaAPI constructor(context: Context,
                                       private var retrofit: CoinpaprikaApiContract = CoinpaprikaApiFactory(context).client())
     : BaseApi(context) {
 
+    open fun ticker(id: String): Observable<TickerEntity> {
+        return Observable.create { emitter ->
+            if (isThereInternetConnection()) {
+                try {
+                    retrofit.getTicker(id)
+                        .doOnNext {
+                            if (!emitter.isDisposed) {
+                                if (it.isSuccessful) {
+                                    emitter.onNext(it.body()!!)
+                                    emitter.onComplete()
+                                } else {
+                                    when (it.code()) {
+                                        429 -> emitter.onError(TooManyRequestsError())
+                                        else -> emitter.onError(ServerConnectionError())
+                                    }
+                                }
+                            }
+                        }
+                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
+                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
+                        .subscribe({}, {error -> error.printStackTrace()})
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    emitter.onError(NetworkConnectionException(e.cause))
+                }
+            } else {
+                emitter.onError(NetworkConnectionException())
+            }
+        }
+    }
+
     open fun tickers(): Observable<List<TickerEntity>> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {

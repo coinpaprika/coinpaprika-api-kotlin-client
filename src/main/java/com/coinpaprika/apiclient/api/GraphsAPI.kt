@@ -46,11 +46,39 @@ open class GraphsAPI constructor(context: Context,
         }
     }
 
-    open fun graphData(cryptocurrencyId: String, period: String): Observable<RawCoinGraphPointsEntity> {
+    open fun graphDataGivenPeriod(cryptocurrencyId: String, period: String): Observable<RawCoinGraphPointsEntity> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getGraphData(cryptocurrencyId, period)
+                    retrofit.getGraphDataGivenPeriod(cryptocurrencyId, period)
+                        .doOnNext {
+                            if (!emitter.isDisposed) {
+                                if (it.isSuccessful) {
+                                    emitter.onNext(it.body()!![0])
+                                    emitter.onComplete()
+                                } else {
+                                    emitter.onError(ServerConnectionError())
+                                }
+                            }
+                        }
+                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
+                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
+                        .subscribe({}, {error -> error.printStackTrace()})
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    emitter.onError(NetworkConnectionException(e.cause))
+                }
+            } else {
+                emitter.onError(NetworkConnectionException())
+            }
+        }
+    }
+
+    open fun graphDataCustomPeriod(cryptocurrencyId: String, fromTs: Long, toTs: Long): Observable<RawCoinGraphPointsEntity> {
+        return Observable.create { emitter ->
+            if (isThereInternetConnection()) {
+                try {
+                    retrofit.getGraphDataCustomPeriod(cryptocurrencyId, fromTs, toTs)
                         .doOnNext {
                             if (!emitter.isDisposed) {
                                 if (it.isSuccessful) {

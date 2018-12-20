@@ -7,12 +7,15 @@
 
 package com.coinpaprika.apiclient.entity
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class EventEntity(val date: String,
-                       @SerializedName("date_to") val dateTo: String,
+                       @SerializedName("date_to") val dateTo: String?,
                        val name: String,
-                       val description: String,
+                       val description: String?,
                        @SerializedName("is_conference") val isConference: Boolean,
-                       val link: String,
-                       @SerializedName("proof_image_link") val proofImageLink: String)
+                       val link: String?,
+                       @SerializedName("proof_image_link") val proofImageLink: String?): Parcelable

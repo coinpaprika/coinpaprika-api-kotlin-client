@@ -14,5 +14,6 @@ enum class GraphPeriods(val period: String) {
     QUARTERLY("1q"),
     YEARLY("1y"),
     YTD("ytd"),
-    MAX("all")
+    MAX("all"),
+    CUSTOM("custom"),
 }

@@ -15,10 +15,21 @@ import retrofit2.http.Path
 
 interface CoinpaprikaGraphsApiContract {
     @GET("currency/chart/{cryptocurrencyId}/{period}/svg")
-    fun getChartSVG(@Path("cryptocurrencyId") cryptocurrencyId: String,
-                   @Path("period") period: String): Observable<Response<String>>
+    fun getChartSVG(
+        @Path("cryptocurrencyId") cryptocurrencyId: String,
+        @Path("period") period: String
+    ): Observable<Response<String>>
 
     @GET("currency/data/{cryptocurrencyId}/{period}/")
-    fun getGraphData(@Path("cryptocurrencyId") cryptocurrencyId: String,
-                    @Path("period") period: String): Observable<Response<List<RawCoinGraphPointsEntity>>>
+    fun getGraphDataGivenPeriod(
+        @Path("cryptocurrencyId") cryptocurrencyId: String,
+        @Path("period") period: String
+    ): Observable<Response<List<RawCoinGraphPointsEntity>>>
+
+    @GET("currency/data/{cryptocurrencyId}/dates/{tsFrom}/{tsTo}/")
+    fun getGraphDataCustomPeriod(
+        @Path("cryptocurrencyId") cryptocurrencyId: String,
+        @Path("tsFrom") tsFrom: Long,
+        @Path("tsTo") tsTo: Long
+    ): Observable<Response<List<RawCoinGraphPointsEntity>>>
 }

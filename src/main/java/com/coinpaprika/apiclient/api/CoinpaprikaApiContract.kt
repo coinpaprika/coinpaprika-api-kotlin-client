@@ -7,6 +7,9 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface CoinpaprikaApiContract {
+    @GET("tickers/{id}/")
+    fun getTicker(@Path("id") id: String): Observable<Response<TickerEntity>>
+
     @GET("tickers")
     fun getTickers(): Observable<Response<List<TickerEntity>>>
 
