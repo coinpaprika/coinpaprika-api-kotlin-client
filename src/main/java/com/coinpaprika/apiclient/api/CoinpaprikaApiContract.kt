@@ -5,6 +5,7 @@ import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface CoinpaprikaApiContract {
     @GET("tickers/{id}/")
@@ -31,6 +32,9 @@ interface CoinpaprikaApiContract {
     @GET("global")
     fun getGlobal(): Observable<Response<GlobalStatsEntity>>
 
+    @GET("tags/{id}?additional_fields=coins")
+    fun getTag(@Path("id") id: String): Observable<Response<TagEntity>>
+
     @GET("tags?additional_fields=coins")
     fun getTags(): Observable<Response<List<TagEntity>>>
 
@@ -39,4 +43,7 @@ interface CoinpaprikaApiContract {
 
     @GET("people/{id}/")
     fun getPerson(@Path("id") id: String): Observable<Response<PersonEntity>>
+
+    @GET("search/?c=currencies,icos,people,tags")
+    fun getSearches(@Query("q") query: String): Observable<Response<SearchEntity>>
 }

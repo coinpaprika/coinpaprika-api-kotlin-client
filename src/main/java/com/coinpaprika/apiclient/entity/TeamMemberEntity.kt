@@ -14,4 +14,4 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class TeamMemberEntity(val id: String,
                             val name: String,
-                            @SerializedName("position") val role: String): Parcelable
+                            @SerializedName("position") val role: String?): Parcelable

@@ -13,5 +13,5 @@ data class PersonEntity(val id: String,
                         val name: String,
                         val description: String?,
                         @SerializedName("teams_count") val teamMembers: Int,
-                        val links: PersonLinks,
-                        val positions: List<PositionEntity>)
+                        val links: PersonLinks?,
+                        val positions: List<PositionEntity>?)
