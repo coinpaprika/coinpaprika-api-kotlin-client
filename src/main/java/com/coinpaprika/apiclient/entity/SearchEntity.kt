@@ -7,7 +7,7 @@
 
 package com.coinpaprika.apiclient.entity
 
-data class SearchEntity(val currencies: List<TickerEntity>,
-                        val icos: List<CoinEntity>,
-                        val people: List<TeamMemberEntity>,
-                        val tags: List<TagEntity>)
+data class SearchEntity(val currencies: MutableList<TickerEntity>,
+                        val icos: MutableList<CoinEntity>,
+                        val people: MutableList<TeamMemberEntity>,
+                        val tags: MutableList<TagEntity>)
