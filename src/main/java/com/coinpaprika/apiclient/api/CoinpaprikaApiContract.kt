@@ -46,4 +46,7 @@ interface CoinpaprikaApiContract {
 
     @GET("search/?c=currencies,icos,people,tags")
     fun getSearches(@Query("q") query: String): Observable<Response<SearchEntity>>
+
+    @GET("news/latest/")
+    fun getNews(): Observable<Response<List<NewsEntity>>>
 }
