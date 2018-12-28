@@ -374,11 +374,11 @@ open class CoinpaprikaAPI constructor(context: Context,
         }
     }
 
-    open fun news(): Observable<List<NewsEntity>> {
+    open fun news(limit: Int): Observable<List<NewsEntity>> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getNews()
+                    retrofit.getNews(limit)
                         .doOnNext {
                             if (!emitter.isDisposed) {
                                 if (it.isSuccessful) {

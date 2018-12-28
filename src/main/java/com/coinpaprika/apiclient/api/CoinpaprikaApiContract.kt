@@ -48,5 +48,5 @@ interface CoinpaprikaApiContract {
     fun getSearches(@Query("q") query: String): Observable<Response<SearchEntity>>
 
     @GET("news/latest/")
-    fun getNews(): Observable<Response<List<NewsEntity>>>
+    fun getNews(@Query("limit") limit: Int): Observable<Response<List<NewsEntity>>>
 }
