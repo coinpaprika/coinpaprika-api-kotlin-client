@@ -10,6 +10,6 @@ package com.coinpaprika.apiclient.entity
 import com.google.gson.JsonArray
 import com.google.gson.annotations.SerializedName
 
-data class RawCoinGraphPointsEntity(val usd: List<JsonArray>,
-                                 @SerializedName("market_cap") val marketCap: List<JsonArray>,
-                                 val volume: List<JsonArray>)
+data class RawCoinGraphPointsEntity(val usd: List<JsonArray>?,
+                                 @SerializedName("market_cap") val marketCap: List<JsonArray>?,
+                                 val volume: List<JsonArray>?)

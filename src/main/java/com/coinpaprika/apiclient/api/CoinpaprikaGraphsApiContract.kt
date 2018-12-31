@@ -21,15 +21,20 @@ interface CoinpaprikaGraphsApiContract {
     ): Observable<Response<String>>
 
     @GET("currency/data/{cryptocurrencyId}/{period}/")
-    fun getGraphDataGivenPeriod(
+    fun getCurrencyDataDefinedPeriod(
         @Path("cryptocurrencyId") cryptocurrencyId: String,
         @Path("period") period: String
     ): Observable<Response<List<RawCoinGraphPointsEntity>>>
 
     @GET("currency/data/{cryptocurrencyId}/dates/{tsFrom}/{tsTo}/")
-    fun getGraphDataCustomPeriod(
+    fun getCurrencyDataCustomPeriod(
         @Path("cryptocurrencyId") cryptocurrencyId: String,
         @Path("tsFrom") tsFrom: Long,
         @Path("tsTo") tsTo: Long
+    ): Observable<Response<List<RawCoinGraphPointsEntity>>>
+
+    @GET("overview/total/{period}/")
+    fun getOverviewDataDefinedPeriod(
+        @Path("period") period: String
     ): Observable<Response<List<RawCoinGraphPointsEntity>>>
 }
