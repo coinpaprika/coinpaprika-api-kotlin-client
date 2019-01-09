@@ -8,9 +8,12 @@ import com.coinpaprika.apiclient.GraphPeriods
 import com.coinpaprika.apiclient.api.CoinpaprikaAPI
 import com.coinpaprika.apiclient.api.GraphsAPI
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class ExampleActivity: Activity() {
+
+    private var compositeDisposable= CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,24 +22,35 @@ class ExampleActivity: Activity() {
 
     private fun makeCallToAPI() {
         // Coinpaprika API call
-        val disposable = CoinpaprikaAPI(this)
-            .tickers()
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { error -> error.printStackTrace() }
-            .subscribe(
-                { next -> for (ticker in next) {
-                    i("ExampleActivity", "Ticker name is ${ticker.name} ")
-                }},
-                { error -> error.printStackTrace() })
+        compositeDisposable.add(
+            CoinpaprikaAPI(this)
+                .tickers()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError { error -> error.printStackTrace() }
+                .subscribe(
+                    { next -> for (ticker in next) {
+                        i("ExampleActivity", "Ticker name is ${ticker.name} ")
+                    }},
+                    { error -> error.printStackTrace() }
+                )
+        )
 
         // Graphs API call
-        val disposable2 = GraphsAPI(this)
-            .chartSvg("btc-bitcoin", GraphPeriods.DAILY.period)
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { next -> Log.i("ExampleActivity", "Example SVG file: $next") },
-                { error -> error.printStackTrace() })
+        compositeDisposable.add(
+            GraphsAPI(this)
+                .chartSvg("btc-bitcoin", GraphPeriods.DAILY.period)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { next -> Log.i("ExampleActivity", "Example SVG file: $next") },
+                    { error -> error.printStackTrace() }
+                )
+        )
+    }
+
+    override fun onDestroy() {
+        compositeDisposable.dispose()
+        super.onDestroy()
     }
 }

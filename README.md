@@ -25,11 +25,10 @@ implementation 'com.coinpaprika:apiclient:$library_version'
 
 Instantiate client and proceed with the call:
 ```kotlin
-CoinpaprikaAPI(this)
+CoinpaprikaAPI(context)
             .tickers()
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { error -> error.printStackTrace() }
             .subscribe(
                 { next -> for (ticker in next) {
                     i("ExampleActivity", "Ticker name is ${ticker.name} ")
@@ -65,7 +64,7 @@ CoinpaprikaAPI(context).tickers()
 ### Graph API
 In order to request the cryptocurrency graph (.svg) instantiate graph client and proceed with the call:
 ```kotlin
-GraphsAPI(this)
+GraphsAPI(context)
             .chartSvg("unique_cryptocurrency_id", GraphPeriods.DAILY.period)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
