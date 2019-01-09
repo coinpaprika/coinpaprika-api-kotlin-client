@@ -1,7 +1,6 @@
 package com.coinpaprika.apiclient
 
 import android.content.Context
-import com.coinpaprika.apiclient.api.CoinpaprikaApiContract
 import com.coinpaprika.apiclient.api.CoinpaprikaGraphsApiContract
 import com.coinpaprika.apiclient.api.CoinpaprikaOembedApiContract
 import com.coinpaprika.apiclient.api.CoinpaprikaRedditApiContract
@@ -25,7 +24,7 @@ class CoinpaprikaApiFactory(context: Context) {
 //    var cacheSize = 10 * 1024 * 1024 // 10 MB
 //    var cache = Cache(context.cacheDir, cacheSize.toLong())
 
-    fun client(): CoinpaprikaApiContract {
+    fun client(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -34,7 +33,6 @@ class CoinpaprikaApiFactory(context: Context) {
                 .addInterceptor(createLoggingInterceptor())
                 .build())
             .build()
-            .create(CoinpaprikaApiContract::class.java)
     }
 
     fun graphs(): CoinpaprikaGraphsApiContract {

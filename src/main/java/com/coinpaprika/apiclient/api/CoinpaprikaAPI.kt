@@ -1,466 +1,101 @@
 package com.coinpaprika.apiclient.api
 
 import android.content.Context
-import com.coinpaprika.apiclient.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.*
-import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.exception.ServerConnectionError
-import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.repository.coin.CoinApi
+import com.coinpaprika.apiclient.repository.global.GlobalApi
+import com.coinpaprika.apiclient.repository.news.NewsApi
+import com.coinpaprika.apiclient.repository.people.PeopleApi
+import com.coinpaprika.apiclient.repository.ranking.RankingApi
+import com.coinpaprika.apiclient.repository.search.SearchApi
+import com.coinpaprika.apiclient.repository.tag.TagApi
+import com.coinpaprika.apiclient.repository.ticker.TickerApi
 import io.reactivex.Observable
 
-open class CoinpaprikaAPI constructor(context: Context,
-                                      private var retrofit: CoinpaprikaApiContract = CoinpaprikaApiFactory(context).client())
+open class CoinpaprikaAPI constructor(context: Context)
     : BaseApi(context) {
 
-    open fun ticker(id: String): Observable<TickerEntity> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getTicker(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                    emitter.onComplete()
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    private var tickerApi = TickerApi(context)
+    private var coinApi = CoinApi(context)
+    private var tagApi = TagApi(context)
+    private var peopleApi = PeopleApi(context)
+    private var searchApi = SearchApi(context)
+    private var newsApi = NewsApi(context)
+    private var rankingApi = RankingApi(context)
+    private var globalApi = GlobalApi(context)
+
+    fun ticker(id: String): Observable<TickerEntity> {
+        return tickerApi.getTicker(id)
+            .map { it -> it.body()!! }
     }
 
-    open fun tickers(): Observable<List<TickerEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getTickers()
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                    emitter.onComplete()
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun tickers(): Observable<List<TickerEntity>> {
+        return tickerApi.getTickers()
+            .map { it -> it.body()!! }
     }
 
-    open fun coin(id: String): Observable<CoinEntity> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getCoin(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun coin(id: String): Observable<CoinEntity> {
+        return coinApi.getCoin(id)
+            .map { it -> it.body()!! }
     }
 
-    open fun coins(): Observable<List<CoinEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getCoins()
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun coins(): Observable<List<CoinEntity>> {
+        return coinApi.getCoins()
+            .map { it -> it.body()!! }
     }
 
-    open fun movers(): Observable<TopMoversEntity> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getMovers()
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun events(id: String): Observable<List<EventEntity>> {
+        return coinApi.getEvents(id)
+            .map { it -> it.body()!! }
     }
 
-    open fun tag(id: String): Observable<TagEntity> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getTag(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun exchanges(id: String): Observable<List<ExchangeEntity>> {
+        return coinApi.getExchanges(id)
+            .map { it -> it.body()!! }
     }
 
-    open fun tags(): Observable<List<TagEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getTags()
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun markets(id: String): Observable<List<MarketEntity>> {
+        return coinApi.getMarkets(id)
+            .map { it -> it.body()!! }
     }
 
-    open fun events(id: String): Observable<List<EventEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getEvents(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun tweets(id: String): Observable<List<TweetEntity>> {
+        return coinApi.getTweets(id)
+            .map { it -> it.body()!! }
     }
 
-    open fun exchanges(id: String): Observable<List<ExchangeEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getExchanges(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun movers(): Observable<TopMoversEntity> {
+        return rankingApi.getMovers()
+            .map { it -> it.body()!! }
     }
 
-    open fun markets(id: String): Observable<List<MarketEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getMarkets(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun global(): Observable<GlobalStatsEntity> {
+        return globalApi.getGlobal()
+            .map { it -> it.body()!! }
     }
 
-    open fun tweets(id: String): Observable<List<TweetEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getTweets(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun tag(id: String): Observable<TagEntity> {
+        return tagApi.getTag(id)
+            .map { it -> it.body()!! }
     }
 
-    open fun person(id: String): Observable<PersonEntity> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getPerson(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun tags(): Observable<List<TagEntity>> {
+        return tagApi.getTags()
+            .map { it -> it.body()!! }
     }
 
-    open fun search(query: String): Observable<SearchEntity> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getSearches(query)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun person(id: String): Observable<PersonEntity> {
+        return peopleApi.getPerson(id)
+            .map { it -> it.body()!! }
     }
 
-    open fun news(limit: Int): Observable<List<NewsEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getNews(limit)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun search(query: String): Observable<SearchEntity> {
+        return searchApi.getSearches(query)
+            .map { it -> it.body()!! }
     }
 
-    open fun global() : Observable<GlobalStatsEntity> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getGlobal()
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it.body()!!)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, {error -> error.printStackTrace()})
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+    fun news(limit: Int): Observable<List<NewsEntity>> {
+        return newsApi.getNews(limit)
+            .map { it -> it.body()!! }
     }
 }

@@ -3,6 +3,7 @@ package com.coinpaprika.apiclient.api
 import android.content.Context
 import android.net.ConnectivityManager
 
+
 abstract class BaseApi(private val context: Context) {
     fun isThereInternetConnection(): Boolean {
         var isConnected = true
