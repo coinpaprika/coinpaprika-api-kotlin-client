@@ -4,7 +4,7 @@
 ![Travis-ci](https://api.travis-ci.org/coinpaprika/coinpaprika-api-kotlin-client.svg)
 [![License](https://img.shields.io/cocoapods/l/CoinpaprikaAPI.svg?style=flat)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/Platform-Android-blue.svg?style=flat)](https://developer.android.com/about/)
-![Kotlin 1.2.71](https://img.shields.io/badge/Kotlin-1.2.71-orange.svg)
+![Kotlin 1.3.11](https://img.shields.io/badge/Kotlin-1.3.11-orange.svg)
 
 This library is written in Kotlin and provides the way to retrieve data from [Coinpaprika.com API](https://api.coinpaprika.com/) with ease.
 
