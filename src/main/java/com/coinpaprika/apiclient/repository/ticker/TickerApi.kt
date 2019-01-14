@@ -24,7 +24,7 @@ class TickerApi constructor(
         .create(TickerApiContract::class.java)
 ) : BaseApi(context), TickerApiContract {
 
-    override fun getTicker(id: String): Observable<Response<TickerEntity>> {
+    override fun getTicker(id: String, quotes: String): Observable<Response<TickerEntity>> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
@@ -55,7 +55,7 @@ class TickerApi constructor(
         }
     }
 
-    override fun getTickers(): Observable<Response<List<TickerEntity>>> {
+    override fun getTickers(quotes: String): Observable<Response<List<TickerEntity>>> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
