@@ -24,11 +24,11 @@ class RankingApi constructor(
         .create(RankingApiContract::class.java)
 ) : BaseApi(context), RankingApiContract {
 
-    override fun getMovers(): Observable<Response<TopMoversEntity>> {
+    override fun getMovers(type: String): Observable<Response<TopMoversEntity>> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getMovers()
+                    retrofit.getMovers(type)
                         .doOnNext {
                             if (!emitter.isDisposed) {
                                 if (it.isSuccessful) {

@@ -64,8 +64,8 @@ open class CoinpaprikaAPI constructor(context: Context)
             .map { it -> it.body()!! }
     }
 
-    fun movers(): Observable<TopMoversEntity> {
-        return rankingApi.getMovers()
+    fun movers(type: String): Observable<TopMoversEntity> {
+        return rankingApi.getMovers(type)
             .map { it -> it.body()!! }
     }
 

@@ -11,8 +11,9 @@ import com.coinpaprika.apiclient.entity.TopMoversEntity
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface RankingApiContract {
     @GET("rankings/top10movers/")
-    fun getMovers(): Observable<Response<TopMoversEntity>>
+    fun getMovers(@Query("type") type: String): Observable<Response<TopMoversEntity>>
 }
