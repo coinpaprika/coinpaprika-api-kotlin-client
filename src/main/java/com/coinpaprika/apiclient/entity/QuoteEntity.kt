@@ -24,5 +24,5 @@ data class QuoteEntity(@SerializedName("price") val price: Double,
                        @SerializedName("percent_change_30d") val percentChange30d: Double,
                        @SerializedName("percent_change_1y") val percentChange1y: Double,
                        @SerializedName("ath_price") val athPrice: Double,
-                       @SerializedName("ath_date") val athDate: String,
+                       @SerializedName("ath_date") val athDate: String? = "",
                        @SerializedName("percent_from_price_ath") val percentFromPriceAth: Double): Parcelable
