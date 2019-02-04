@@ -7,8 +7,11 @@
 
 package com.coinpaprika.apiclient.entity
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class ExchangeEntity(val id: String,
                           val name: String,
                           @SerializedName("adjusted_volume_24h_share") val volume: Double,
@@ -16,4 +19,4 @@ data class ExchangeEntity(val id: String,
                           val active: Boolean,
                           @SerializedName("adjusted_rank") val rankAdjusted: Int,
                           @SerializedName("reported_rank") val rankReported: Int,
-                          val quotes: Map<String, QuoteEntity> = emptyMap())
+                          val quotes: Map<String, QuoteEntity> = emptyMap()): Parcelable

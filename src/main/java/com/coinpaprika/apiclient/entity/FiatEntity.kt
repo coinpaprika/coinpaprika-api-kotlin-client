@@ -7,5 +7,9 @@
 
 package com.coinpaprika.apiclient.entity
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class FiatEntity(val name: String,
-                      val symbol: String)
+                      val symbol: String): Parcelable
