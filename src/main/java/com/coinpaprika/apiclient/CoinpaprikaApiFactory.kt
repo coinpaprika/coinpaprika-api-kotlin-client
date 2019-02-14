@@ -5,9 +5,7 @@ import com.coinpaprika.apiclient.api.CoinpaprikaGraphsApiContract
 import com.coinpaprika.apiclient.api.CoinpaprikaOembedApiContract
 import com.coinpaprika.apiclient.api.CoinpaprikaRedditApiContract
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import okhttp3.ConnectionPool
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -21,8 +19,8 @@ class CoinpaprikaApiFactory(context: Context) {
         const val REDDIT_URL = "https://www.reddit.com/"
     }
 
-//    var cacheSize = 10 * 1024 * 1024 // 10 MB
-//    var cache = Cache(context.cacheDir, cacheSize.toLong())
+    private var cacheSize = 10 * 1024 * 1024 // 10 MB
+    private var cache = Cache(context.cacheDir, cacheSize.toLong())
 
     fun client(): Retrofit {
         return Retrofit.Builder()
@@ -42,6 +40,11 @@ class CoinpaprikaApiFactory(context: Context) {
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(createClient()
+                .cache(cache)
+                .addInterceptor{
+                    val request = it.request().newBuilder().header("Cache-Control", "public, max-age=" + 60 * 5).build()
+                    it.proceed(request)
+                }
                 .addInterceptor(createLoggingInterceptor())
                 .build())
             .build()
@@ -75,6 +78,7 @@ class CoinpaprikaApiFactory(context: Context) {
     private fun createClient(): OkHttpClient.Builder {
         return OkHttpClient.Builder()
 //            .cache(cache)
+            .protocols(listOf(Protocol.HTTP_1_1, Protocol.HTTP_2))
             .writeTimeout(20000, TimeUnit.MILLISECONDS)
             .readTimeout(10000, TimeUnit.MILLISECONDS)
             .retryOnConnectionFailure(true)

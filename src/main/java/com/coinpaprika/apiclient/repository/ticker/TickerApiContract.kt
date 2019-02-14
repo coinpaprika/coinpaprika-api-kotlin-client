@@ -16,8 +16,8 @@ import retrofit2.http.Query
 
 interface TickerApiContract {
     @GET("tickers/{id}/")
-    fun getTicker(@Path("id") id: String, @Query("quotes") quotes: String = "USD,BTC,ETH"): Observable<Response<TickerEntity>>
+    fun getTicker(@Path("id") id: String, @Query("quotes") quotes: String = "USD,BTC,ETH,PLN"): Observable<Response<TickerEntity>>
 
     @GET("tickers")
-    fun getTickers(@Query("quotes") quotes: String = "USD,BTC,ETH"): Observable<Response<List<TickerEntity>>>
+    fun getTickers(@Query("quotes") quotes: String = "USD,BTC,ETH,PLN"): Observable<Response<List<TickerEntity>>>
 }
