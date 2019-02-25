@@ -28,7 +28,7 @@ class CoinpaprikaApiFactory(context: Context) {
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(createClient()
-                .addInterceptor(createLoggingInterceptor())
+//                .addInterceptor(createLoggingInterceptor())
                 .build())
             .build()
     }
@@ -45,7 +45,7 @@ class CoinpaprikaApiFactory(context: Context) {
                     val request = it.request().newBuilder().header("Cache-Control", "public, max-age=" + 60 * 5).build()
                     it.proceed(request)
                 }
-                .addInterceptor(createLoggingInterceptor())
+//                .addInterceptor(createLoggingInterceptor())
                 .build())
             .build()
             .create(CoinpaprikaGraphsApiContract::class.java)
