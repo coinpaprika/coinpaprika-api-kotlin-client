@@ -35,11 +35,11 @@ class RankingApiTest {
         val movers = mockMovers
         val response = Response.success(movers)
 
-        `when`(mockApi.getMovers())
+        `when`(mockApi.getTop10Movers())
             .thenReturn(Observable.just(response))
 
         val client = RankingApi(mockContext, mockApi)
-        client.getMovers()
+        client.getTop10Movers()
             .map { it.body() }
             .test()
             .assertResult(movers)
@@ -51,11 +51,11 @@ class RankingApiTest {
         val response = Response.error<TopMoversEntity>(429,
             ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
 
-        `when`(mockApi.getMovers())
+        `when`(mockApi.getTop10Movers())
             .thenReturn(Observable.just(response))
 
         val client = RankingApi(mockContext, mockApi)
-        client.getMovers()
+        client.getTop10Movers()
             .test()
             .assertError(TooManyRequestsError::class.java)
             .assertNotComplete()
@@ -66,11 +66,11 @@ class RankingApiTest {
         val response = Response.error<TopMoversEntity>(404,
             ResponseBody.create(MediaType.parse("text/html"), ""))
 
-        `when`(mockApi.getMovers())
+        `when`(mockApi.getTop10Movers())
             .thenReturn(Observable.just(response))
 
         val client = RankingApi(mockContext, mockApi)
-        client.getMovers()
+        client.getTop10Movers()
             .test()
             .assertError(ServerConnectionError::class.java)
             .assertNotComplete()
@@ -78,13 +78,13 @@ class RankingApiTest {
 
     @Test
     fun `get movers network connection error`() {
-        given(mockApi.getMovers())
+        given(mockApi.getTop10Movers())
             .willAnswer {
                 throw NetworkConnectionException()
             }
 
         val client = RankingApi(mockContext, mockApi)
-        client.getMovers()
+        client.getTop10Movers()
             .test()
             .assertError(NetworkConnectionException::class.java)
             .assertNotComplete()

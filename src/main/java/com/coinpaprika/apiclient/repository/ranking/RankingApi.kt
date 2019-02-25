@@ -24,11 +24,41 @@ class RankingApi constructor(
         .create(RankingApiContract::class.java)
 ) : BaseApi(context), RankingApiContract {
 
-    override fun getMovers(type: String): Observable<Response<TopMoversEntity>> {
+    override fun getTop10Movers(type: String): Observable<Response<TopMoversEntity>> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getMovers(type)
+                    retrofit.getTop10Movers(type)
+                        .doOnNext {
+                            if (!emitter.isDisposed) {
+                                if (it.isSuccessful) {
+                                    emitter.onNext(it)
+                                } else {
+                                    when (it.code()) {
+                                        429 -> emitter.onError(TooManyRequestsError())
+                                        else -> emitter.onError(ServerConnectionError())
+                                    }
+                                }
+                            }
+                        }
+                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
+                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
+                        .subscribe({}, { error -> error.printStackTrace() })
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    emitter.onError(NetworkConnectionException(e.cause))
+                }
+            } else {
+                emitter.onError(NetworkConnectionException())
+            }
+        }
+    }
+
+    override fun getMovers(results: Int, range: String): Observable<Response<TopMoversEntity>> {
+        return Observable.create { emitter ->
+            if (isThereInternetConnection()) {
+                try {
+                    retrofit.getMovers(results, range)
                         .doOnNext {
                             if (!emitter.isDisposed) {
                                 if (it.isSuccessful) {

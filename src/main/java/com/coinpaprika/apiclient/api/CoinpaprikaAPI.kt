@@ -26,76 +26,76 @@ open class CoinpaprikaAPI constructor(context: Context)
 
     fun ticker(id: String): Observable<TickerEntity> {
         return tickerApi.getTicker(id)
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun tickers(): Observable<List<TickerEntity>> {
         return tickerApi.getTickers()
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun coin(id: String): Observable<CoinEntity> {
         return coinApi.getCoin(id)
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun coins(): Observable<List<CoinEntity>> {
         return coinApi.getCoins()
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun events(id: String): Observable<List<EventEntity>> {
         return coinApi.getEvents(id)
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun exchanges(id: String): Observable<List<ExchangeEntity>> {
         return coinApi.getExchanges(id)
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun markets(id: String): Observable<List<MarketEntity>> {
         return coinApi.getMarkets(id)
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun tweets(id: String): Observable<List<TweetEntity>> {
         return coinApi.getTweets(id)
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun movers(type: String): Observable<TopMoversEntity> {
-        return rankingApi.getMovers(type)
-            .map { it -> it.body()!! }
+        return rankingApi.getTop10Movers(type)
+            .map { it.body() }
     }
 
     fun global(): Observable<GlobalStatsEntity> {
         return globalApi.getGlobal()
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun tag(id: String): Observable<TagEntity> {
         return tagApi.getTag(id)
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun tags(): Observable<List<TagEntity>> {
         return tagApi.getTags()
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun person(id: String): Observable<PersonEntity> {
         return peopleApi.getPerson(id)
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun search(query: String): Observable<SearchEntity> {
         return searchApi.getSearches(query)
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 
     fun news(limit: Int): Observable<List<NewsEntity>> {
         return newsApi.getNews(limit)
-            .map { it -> it.body()!! }
+            .map { it.body() }
     }
 }

@@ -15,5 +15,10 @@ import retrofit2.http.Query
 
 interface RankingApiContract {
     @GET("rankings/top10movers/")
-    fun getMovers(@Query("type") type: String): Observable<Response<TopMoversEntity>>
+    fun getTop10Movers(@Query("type") type: String): Observable<Response<TopMoversEntity>>
+
+    @GET("rankings/top-movers/")
+    fun getMovers(@Query("results_number") results: Int,
+                  @Query("marketcap_limit") range: String
+    ): Observable<Response<TopMoversEntity>>
 }
