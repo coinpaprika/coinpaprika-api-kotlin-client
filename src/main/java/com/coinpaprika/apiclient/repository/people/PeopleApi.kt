@@ -11,6 +11,7 @@ import android.content.Context
 import com.coinpaprika.apiclient.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.entity.PersonEntity
+import com.coinpaprika.apiclient.entity.TweetEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
@@ -29,6 +30,36 @@ class PeopleApi constructor(
             if (isThereInternetConnection()) {
                 try {
                     retrofit.getPerson(id)
+                        .doOnNext {
+                            if (!emitter.isDisposed) {
+                                if (it.isSuccessful) {
+                                    emitter.onNext(it)
+                                } else {
+                                    when (it.code()) {
+                                        429 -> emitter.onError(TooManyRequestsError())
+                                        else -> emitter.onError(ServerConnectionError())
+                                    }
+                                }
+                            }
+                        }
+                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
+                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
+                        .subscribe({}, { error -> error.printStackTrace() })
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    emitter.onError(NetworkConnectionException(e.cause))
+                }
+            } else {
+                emitter.onError(NetworkConnectionException())
+            }
+        }
+    }
+
+    override fun getTweets(id: String): Observable<Response<List<TweetEntity>>> {
+        return Observable.create { emitter ->
+            if (isThereInternetConnection()) {
+                try {
+                    retrofit.getTweets(id)
                         .doOnNext {
                             if (!emitter.isDisposed) {
                                 if (it.isSuccessful) {
