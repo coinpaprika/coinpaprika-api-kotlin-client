@@ -10,7 +10,9 @@ package com.coinpaprika.apiclient.repository.coin
 import com.coinpaprika.apiclient.entity.*
 import io.reactivex.Observable
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface CoinApiContract {
@@ -31,4 +33,7 @@ interface CoinApiContract {
 
     @GET("coins/{id}/twitter/")
     fun getTweets(@Path("id") id: String): Observable<Response<List<TweetEntity>>>
+
+    @POST("coins/{id}/events/")
+    fun addEvent(@Path("id") cryptoId: String, @Body event: EventEntity): Observable<Response<Void>>
 }
