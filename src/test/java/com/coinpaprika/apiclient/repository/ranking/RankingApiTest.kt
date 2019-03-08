@@ -34,12 +34,13 @@ class RankingApiTest {
     fun `get movers happy case`() {
         val movers = mockMovers
         val response = Response.success(movers)
+        val type = "price"
 
-        `when`(mockApi.getTop10Movers())
+        `when`(mockApi.getTop10Movers(type))
             .thenReturn(Observable.just(response))
 
         val client = RankingApi(mockContext, mockApi)
-        client.getTop10Movers()
+        client.getTop10Movers(type)
             .map { it.body() }
             .test()
             .assertResult(movers)
@@ -50,12 +51,13 @@ class RankingApiTest {
     fun `get movers too many requests error`() {
         val response = Response.error<TopMoversEntity>(429,
             ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+        val type = "price"
 
-        `when`(mockApi.getTop10Movers())
+        `when`(mockApi.getTop10Movers(type))
             .thenReturn(Observable.just(response))
 
         val client = RankingApi(mockContext, mockApi)
-        client.getTop10Movers()
+        client.getTop10Movers(type)
             .test()
             .assertError(TooManyRequestsError::class.java)
             .assertNotComplete()
@@ -65,12 +67,13 @@ class RankingApiTest {
     fun `get movers server error`() {
         val response = Response.error<TopMoversEntity>(404,
             ResponseBody.create(MediaType.parse("text/html"), ""))
+        val type = "price"
 
-        `when`(mockApi.getTop10Movers())
+        `when`(mockApi.getTop10Movers(type))
             .thenReturn(Observable.just(response))
 
         val client = RankingApi(mockContext, mockApi)
-        client.getTop10Movers()
+        client.getTop10Movers(type)
             .test()
             .assertError(ServerConnectionError::class.java)
             .assertNotComplete()
@@ -78,13 +81,14 @@ class RankingApiTest {
 
     @Test
     fun `get movers network connection error`() {
-        given(mockApi.getTop10Movers())
+        val type = "price"
+        given(mockApi.getTop10Movers(type))
             .willAnswer {
                 throw NetworkConnectionException()
             }
 
         val client = RankingApi(mockContext, mockApi)
-        client.getTop10Movers()
+        client.getTop10Movers(type)
             .test()
             .assertError(NetworkConnectionException::class.java)
             .assertNotComplete()
