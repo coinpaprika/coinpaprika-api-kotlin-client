@@ -18,7 +18,7 @@ class RedditAPI constructor(context: Context,
                             private var retrofit: CoinpaprikaRedditApiContract = CoinpaprikaApiFactory(context).reddit())
     : BaseApi(context) {
 
-    open fun getHot(subreddit: String): Observable<RedditResponseEntity> {
+    fun getHot(subreddit: String): Observable<RedditResponseEntity> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
@@ -46,7 +46,7 @@ class RedditAPI constructor(context: Context,
         }
     }
 
-    open fun getRising(subreddit: String): Observable<RedditResponseEntity> {
+    fun getRising(subreddit: String): Observable<RedditResponseEntity> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
@@ -74,7 +74,7 @@ class RedditAPI constructor(context: Context,
         }
     }
 
-    open fun getNew(subreddit: String): Observable<RedditResponseEntity> {
+    fun getNew(subreddit: String): Observable<RedditResponseEntity> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
