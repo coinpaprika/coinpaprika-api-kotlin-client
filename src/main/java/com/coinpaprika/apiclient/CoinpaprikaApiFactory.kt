@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
-class CoinpaprikaApiFactory(context: Context) {
+open class CoinpaprikaApiFactory(context: Context) {
     companion object {
         private const val BASE_URL = "https://api.coinpaprika.com/v1/"
         private const val GRAPHS_URL = "https://graphs.coinpaprika.com/"
@@ -75,7 +75,7 @@ class CoinpaprikaApiFactory(context: Context) {
             .create(CoinpaprikaRedditApiContract::class.java)
     }
 
-    private fun createClient(): OkHttpClient.Builder {
+    protected fun createClient(): OkHttpClient.Builder {
         return OkHttpClient.Builder()
 //            .cache(cache)
             .protocols(listOf(Protocol.HTTP_1_1, Protocol.HTTP_2))
@@ -86,7 +86,7 @@ class CoinpaprikaApiFactory(context: Context) {
             .connectionPool(ConnectionPool(0, 1, TimeUnit.NANOSECONDS))
     }
 
-    private fun createLoggingInterceptor(): Interceptor {
+    protected fun createLoggingInterceptor(): Interceptor {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         return interceptor
