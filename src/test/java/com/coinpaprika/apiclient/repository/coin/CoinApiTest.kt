@@ -102,11 +102,11 @@ class CoinApiTest {
         val markets = listOf(mockMarket)
         val response = Response.success(markets)
 
-        `when`(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID))
+        `when`(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES))
             .thenReturn(Observable.just(response))
 
         val client = CoinApi(mockContext, mockApi)
-        client.getMarkets(FAKE_CRYPTOCURRENCY_ID)
+        client.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES)
             .map { it.body() }
             .test()
             .assertResult(markets)
@@ -194,11 +194,11 @@ class CoinApiTest {
         val response = Response.error<List<MarketEntity>>(429,
             ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
 
-        `when`(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID))
+        `when`(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES))
             .thenReturn(Observable.just(response))
 
         val client = CoinApi(mockContext, mockApi)
-        client.getMarkets(FAKE_CRYPTOCURRENCY_ID)
+        client.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES)
             .test()
             .assertError(TooManyRequestsError::class.java)
             .assertNotComplete()
@@ -284,11 +284,11 @@ class CoinApiTest {
         val response = Response.error<List<MarketEntity>>(404,
             ResponseBody.create(MediaType.parse("text/html"), ""))
 
-        `when`(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID))
+        `when`(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES))
             .thenReturn(Observable.just(response))
 
         val client = CoinApi(mockContext, mockApi)
-        client.getMarkets(FAKE_CRYPTOCURRENCY_ID)
+        client.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES)
             .test()
             .assertError(ServerConnectionError::class.java)
             .assertNotComplete()
@@ -367,13 +367,13 @@ class CoinApiTest {
 
     @Test
     fun `get markets network connection error`() {
-        given(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID))
+        given(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES))
             .willAnswer {
                 throw NetworkConnectionException()
             }
 
         val client = CoinApi(mockContext, mockApi)
-        client.getMarkets(FAKE_CRYPTOCURRENCY_ID)
+        client.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES)
             .test()
             .assertError(NetworkConnectionException::class.java)
             .assertNotComplete()
@@ -395,5 +395,6 @@ class CoinApiTest {
 
     companion object {
         private const val FAKE_CRYPTOCURRENCY_ID = "btc-bitcoin"
+        private const val FAKE_QUOTES = "btc,eth,usd"
     }
 }

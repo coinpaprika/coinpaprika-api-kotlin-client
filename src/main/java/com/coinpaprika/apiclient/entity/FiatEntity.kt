@@ -11,5 +11,6 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class FiatEntity(val name: String,
+data class FiatEntity(val id: String,
+                      val name: String,
                       val symbol: String): Parcelable

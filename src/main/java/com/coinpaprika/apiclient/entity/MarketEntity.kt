@@ -23,4 +23,9 @@ data class MarketEntity(@SerializedName("exchange_id") val exchangeId: String,
                         @SerializedName("adjusted_volume_24h_share") val volumeAdjusted: Double?,
                         @SerializedName("reported_volume_24h_share") val volumeReported: Double?,
                         val quotes: Map<String, QuoteEntity>,
-                        @SerializedName("last_updated") val lastUpdated: String)
+                        @SerializedName("last_updated") val lastUpdated: String) {
+
+    fun getPairedConversionSymbol(): String {
+        return pair.substringAfter("/")
+    }
+}

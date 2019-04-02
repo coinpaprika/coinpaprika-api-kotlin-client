@@ -59,7 +59,7 @@ class TickerApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getTickers()
+                    retrofit.getTickers(quotes)
                         .doOnNext {
                             if (!emitter.isDisposed) {
                                 if (it.isSuccessful) {

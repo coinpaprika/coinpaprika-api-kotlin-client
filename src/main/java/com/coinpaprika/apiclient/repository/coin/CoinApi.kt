@@ -144,11 +144,11 @@ class CoinApi constructor(
         }
     }
 
-    override fun getMarkets(id: String): Observable<Response<List<MarketEntity>>> {
+    override fun getMarkets(id: String, quotes: String): Observable<Response<List<MarketEntity>>> {
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getMarkets(id)
+                    retrofit.getMarkets(id, quotes)
                         .doOnNext {
                             if (!emitter.isDisposed) {
                                 if (it.isSuccessful) {

@@ -19,5 +19,5 @@ interface TickerApiContract {
     fun getTicker(@Path("id") id: String, @Query("quotes") quotes: String = "USD,BTC,ETH,PLN"): Observable<Response<TickerEntity>>
 
     @GET("tickers")
-    fun getTickers(@Query("quotes") quotes: String = "USD,BTC,ETH,PLN"): Observable<Response<List<TickerEntity>>>
+    fun getTickers(@Query("quotes") quotes: String = "USD,BTC,ETH"): Observable<Response<List<TickerEntity>>>
 }

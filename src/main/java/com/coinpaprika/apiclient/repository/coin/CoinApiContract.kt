@@ -10,10 +10,7 @@ package com.coinpaprika.apiclient.repository.coin
 import com.coinpaprika.apiclient.entity.*
 import io.reactivex.Observable
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface CoinApiContract {
     @GET("coins/{id}")
@@ -29,7 +26,7 @@ interface CoinApiContract {
     fun getExchanges(@Path("id") id: String): Observable<Response<List<ExchangeEntity>>>
 
     @GET("coins/{id}/markets/")
-    fun getMarkets(@Path("id") id: String): Observable<Response<List<MarketEntity>>>
+    fun getMarkets(@Path("id") id: String, @Query("quotes") quotes: String): Observable<Response<List<MarketEntity>>>
 
     @GET("coins/{id}/twitter/")
     fun getTweets(@Path("id") id: String): Observable<Response<List<TweetEntity>>>

@@ -3,6 +3,7 @@ package com.coinpaprika.apiclient.api
 import android.content.Context
 import com.coinpaprika.apiclient.entity.*
 import com.coinpaprika.apiclient.repository.coin.CoinApi
+import com.coinpaprika.apiclient.repository.fiats.FiatApi
 import com.coinpaprika.apiclient.repository.global.GlobalApi
 import com.coinpaprika.apiclient.repository.news.NewsApi
 import com.coinpaprika.apiclient.repository.people.PeopleApi
@@ -23,6 +24,7 @@ open class CoinpaprikaAPI constructor(context: Context)
     private var newsApi = NewsApi(context)
     private var rankingApi = RankingApi(context)
     private var globalApi = GlobalApi(context)
+    private var fiatApi = FiatApi(context)
 
     fun ticker(id: String): Observable<TickerEntity> {
         return tickerApi.getTicker(id)
@@ -54,8 +56,8 @@ open class CoinpaprikaAPI constructor(context: Context)
             .map { it.body() }
     }
 
-    fun markets(id: String): Observable<List<MarketEntity>> {
-        return coinApi.getMarkets(id)
+    fun markets(id: String, quotes: String): Observable<List<MarketEntity>> {
+        return coinApi.getMarkets(id, quotes)
             .map { it.body() }
     }
 
@@ -96,6 +98,11 @@ open class CoinpaprikaAPI constructor(context: Context)
 
     fun news(limit: Int): Observable<List<NewsEntity>> {
         return newsApi.getNews(limit)
+            .map { it.body() }
+    }
+
+    fun fiats(): Observable<List<FiatEntity>> {
+        return fiatApi.getFiats()
             .map { it.body() }
     }
 }
