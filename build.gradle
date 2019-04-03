@@ -19,10 +19,6 @@ allprojects {
         jcenter()
         mavenCentral()
     }
-
-    task wrapper(type: Wrapper) {
-        gradleVersion = '5.1.1'
-    }
 }
 
 apply plugin: 'com.android.library'
