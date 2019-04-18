@@ -1,8 +1,5 @@
 /*
  * Created by Piotr Kostecki on 09.01.19 12:50
- * kontakt@piotrkostecki.pl
- *
- * Last modified 09.01.19 12:50
  */
 
 package com.coinpaprika.apiclient.repository.ranking

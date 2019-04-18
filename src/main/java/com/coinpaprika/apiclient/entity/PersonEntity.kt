@@ -1,8 +1,5 @@
 /*
  * Created by Piotr Kostecki on 18.12.18 13:17
- * kontakt@piotrkostecki.pl
- *
- * Last modified 18.12.18 13:17
  */
 
 package com.coinpaprika.apiclient.entity

@@ -1,8 +1,5 @@
 /*
  * Created by Piotr Kostecki on 09.01.19 16:24
- * kontakt@piotrkostecki.pl
- *
- * Last modified 09.01.19 16:20
  */
 
 package com.coinpaprika.apiclient.repository.ticker

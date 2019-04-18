@@ -1,8 +1,5 @@
 /*
  * Created by Piotr Kostecki on 23.11.18 15:02
- * kontakt@piotrkostecki.pl
- *
- * Last modified 23.11.18 15:02
  */
 
 package com.coinpaprika.apiclient.api
@@ -20,13 +17,13 @@ interface CoinpaprikaGraphsApiContract {
         @Path("period") period: String
     ): Observable<Response<String>>
 
-    @GET("currency/data/{cryptocurrencyId}/{period}/")
+    @GET("currency/data/{cryptocurrencyId}/{period}/?quote=USD")
     fun getCurrencyDataDefinedPeriod(
         @Path("cryptocurrencyId") cryptocurrencyId: String,
         @Path("period") period: String
     ): Observable<Response<List<RawCoinGraphPointsEntity>>>
 
-    @GET("currency/data/{cryptocurrencyId}/dates/{tsFrom}/{tsTo}/")
+    @GET("currency/data/{cryptocurrencyId}/dates/{tsFrom}/{tsTo}/?quote=USD")
     fun getCurrencyDataCustomPeriod(
         @Path("cryptocurrencyId") cryptocurrencyId: String,
         @Path("tsFrom") tsFrom: Long,

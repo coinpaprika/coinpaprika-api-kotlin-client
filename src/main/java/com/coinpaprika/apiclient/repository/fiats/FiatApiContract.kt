@@ -1,8 +1,5 @@
 /*
- * Created by Piotr Kostecki on 4/1/19 1:33 PM
- * kontakt@piotrkostecki.pl
- *
- * Last modified 4/1/19 1:33 PM
+ * Created by Piotr Kostecki on 4/1/19 1:33 PM PM
  */
 
 package com.coinpaprika.apiclient.repository.fiats
