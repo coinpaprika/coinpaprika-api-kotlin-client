@@ -28,7 +28,7 @@ android {
     compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion globalConfiguration["androidMinSdkVersion"]
         targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
         versionCode 1
         versionName "1.0"
@@ -53,25 +53,25 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation coinpaprikaApiClientDependencies.kotlinJdk
+    implementation apiDependencies.kotlinJdk
 
     // Networking
-    implementation coinpaprikaApiClientDependencies.retrofit
-    implementation coinpaprikaApiClientDependencies.retrofitScalars
-    implementation coinpaprikaApiClientDependencies.gson
-    implementation coinpaprikaApiClientDependencies.gsonConverter
-    implementation coinpaprikaApiClientDependencies.loggingInterceptor
+    implementation apiDependencies.retrofit
+    implementation apiDependencies.retrofitScalars
+    implementation apiDependencies.gson
+    implementation apiDependencies.gsonConverter
+    implementation apiDependencies.loggingInterceptor
 
     // Reactive programming
-    implementation coinpaprikaApiClientDependencies.rxKotlin
-    implementation coinpaprikaApiClientDependencies.rxJava
-    implementation coinpaprikaApiClientDependencies.rxAndroid
-    implementation coinpaprikaApiClientDependencies.retrofitRxJavaAdapter
+    implementation apiDependencies.rxKotlin
+    implementation apiDependencies.rxJava
+    implementation apiDependencies.rxAndroid
+    implementation apiDependencies.retrofitRxJavaAdapter
 
     // Testing
-    testImplementation coinpaprikaApiClientDependencies.junit
-    testImplementation coinpaprikaApiClientDependencies.testCore
-    testImplementation coinpaprikaApiClientDependencies.testRunner
-    testImplementation coinpaprikaApiClientDependencies.mockito
-    androidTestImplementation coinpaprikaApiClientDependencies.espresso
+    testImplementation apiDependencies.junit
+    testImplementation apiDependencies.testCore
+    testImplementation apiDependencies.testRunner
+    testImplementation apiDependencies.mockito
+    androidTestImplementation apiDependencies.espresso
 }

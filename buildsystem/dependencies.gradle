@@ -37,11 +37,7 @@ ext {
     espressoCoreVersion = '3.1.0'
     mockitoVersion = '2.23.0'
 
-    buildDependencies = [
-            kotlinGradle:           "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
-    ]
-
-    coinpaprikaApiClientDependencies = [
+    apiDependencies = [
             // Kotlin
             kotlinJdk:              "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
 
