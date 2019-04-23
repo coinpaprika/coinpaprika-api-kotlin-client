@@ -1,0 +1,59 @@
+ext {
+    // Android
+    androidBuildToolsVersion = '28.0.3'
+    androidMinSdkVersion = 16
+    androidTargetSdkVersion = 28
+    androidCompileSdkVersion = 28
+
+    // Kotlin
+    kotlinVersion = '1.3.30'
+
+    // Reactive programming
+    rxKotlinVersion = '2.2.0'
+    rxJavaVersion = '2.2.3'
+    rxAndroidVersion = '2.0.1'
+    retrofitRxJavaAdapterVersion = '1.0.0'
+
+    // Networking
+    retrofitVersion = '2.5.0'
+    retrofitConverterScalarsVersion = '2.3.0'
+    gsonConverterVersion = '2.3.0'
+    gsonVersion = '2.8.2'
+    loggingInterceptorVersion = '3.9.1'
+
+    // Testing
+    jUnitVersion = '4.12'
+    testCoreVersion = '1.1.0'
+    testRunnerVersion = '1.1.1'
+    espressoCoreVersion = '3.1.0'
+    mockitoVersion = '2.23.0'
+
+    buildDependencies = [
+            kotlinGradle:           "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+    ]
+
+    coinpaprikaApiClientDependencies = [
+            // Kotlin
+            kotlinJdk:              "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
+
+            // Reactive programming
+            rxKotlin:               "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
+            rxJava:                 "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+            rxAndroid:              "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+            retrofitRxJavaAdapter:  "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${retrofitRxJavaAdapterVersion}",
+
+            // Networking
+            retrofit:               "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitScalars:        "com.squareup.retrofit2:converter-scalars:${retrofitConverterScalarsVersion}",
+            gson:                   "com.google.code.gson:gson:${gsonVersion}",
+            gsonConverter:          "com.squareup.retrofit2:converter-gson:${gsonConverterVersion}",
+            loggingInterceptor:     "com.squareup.okhttp3:logging-interceptor:${loggingInterceptorVersion}",
+
+            // Testing
+            junit:                  "junit:junit:${jUnitVersion}",
+            testCore:               "androidx.test:core:${testCoreVersion}",
+            testRunner:             "androidx.test:runner:${testRunnerVersion}",
+            espresso:               "androidx.test.espresso:espresso-core:${espressoCoreVersion}",
+            mockito:                "org.mockito:mockito-core:${mockitoVersion}",
+    ]
+}
