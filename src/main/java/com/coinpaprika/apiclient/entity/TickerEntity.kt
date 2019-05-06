@@ -14,5 +14,5 @@ data class TickerEntity(val id: String,
                         @SerializedName("max_supply") val maxSupply: Long = 0,
                         @SerializedName("beta_value") val betaValue: Double = 0.0,
                         @SerializedName("last_updated") val lastUpdated: String = "",
-                        val quotes: Map<String, QuoteEntity>? = emptyMap(),
+                        var quotes: Map<String, QuoteEntity>? = emptyMap(),
                         var tags: MutableList<String>? = mutableListOf()): Parcelable
