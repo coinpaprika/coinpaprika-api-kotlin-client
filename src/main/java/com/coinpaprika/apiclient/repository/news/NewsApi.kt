@@ -5,8 +5,8 @@
 package com.coinpaprika.apiclient.repository.news
 
 import android.content.Context
-import com.coinpaprika.apiclient.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.api.BaseApi
+import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.NewsEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
@@ -16,7 +16,7 @@ import retrofit2.Response
 
 class NewsApi constructor(
     context: Context,
-    private var retrofit: NewsApiContract = CoinpaprikaApiFactory(context)
+    private var retrofit: NewsApiContract = CoinpaprikaApiFactory()
         .client()
         .create(NewsApiContract::class.java)
 ) : BaseApi(context), NewsApiContract {

@@ -5,8 +5,8 @@
 package com.coinpaprika.apiclient.repository.search
 
 import android.content.Context
-import com.coinpaprika.apiclient.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.api.BaseApi
+import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.SearchEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
@@ -16,7 +16,7 @@ import retrofit2.Response
 
 class SearchApi constructor(
     context: Context,
-    private var retrofit: SearchApiContract = CoinpaprikaApiFactory(context)
+    private var retrofit: SearchApiContract = CoinpaprikaApiFactory()
         .client()
         .create(SearchApiContract::class.java)
 ) : BaseApi(context), SearchApiContract {

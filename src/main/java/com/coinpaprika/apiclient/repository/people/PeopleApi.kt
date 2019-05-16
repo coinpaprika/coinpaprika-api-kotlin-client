@@ -5,8 +5,8 @@
 package com.coinpaprika.apiclient.repository.people
 
 import android.content.Context
-import com.coinpaprika.apiclient.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.api.BaseApi
+import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.PersonEntity
 import com.coinpaprika.apiclient.entity.TweetEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
@@ -17,7 +17,7 @@ import retrofit2.Response
 
 class PeopleApi constructor(
     context: Context,
-    private var retrofit: PeopleApiContract = CoinpaprikaApiFactory(context)
+    private var retrofit: PeopleApiContract = CoinpaprikaApiFactory()
         .client()
         .create(PeopleApiContract::class.java)
 ) : BaseApi(context), PeopleApiContract {

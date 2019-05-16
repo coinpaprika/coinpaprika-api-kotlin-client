@@ -13,7 +13,7 @@ import com.coinpaprika.apiclient.repository.tag.TagApi
 import com.coinpaprika.apiclient.repository.ticker.TickerApi
 import io.reactivex.Observable
 
-open class CoinpaprikaAPI constructor(context: Context)
+open class CoinpaprikaApi constructor(context: Context)
     : BaseApi(context) {
 
     private var tickerApi = TickerApi(context)

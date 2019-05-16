@@ -61,18 +61,6 @@ CoinpaprikaAPI(context).tickers()
     .doOnError { error -> /* handle an error */ }
 ```
 
-### Graph API
-In order to request the cryptocurrency graph (.svg) instantiate graph client and proceed with the call:
-```kotlin
-GraphsAPI(context)
-            .chartSvg("unique_cryptocurrency_id", GraphPeriods.DAILY.period)
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { next -> Log.i("ExampleActivity", "Example SVG file: $next") },
-                { error -> error.printStackTrace() })
-```
-
 ## License
 
 CoinpaprikaAPI is available under the MIT license. See the LICENSE file for more info.

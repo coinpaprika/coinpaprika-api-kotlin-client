@@ -5,8 +5,8 @@
 package com.coinpaprika.apiclient.repository.ticker
 
 import android.content.Context
-import com.coinpaprika.apiclient.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.api.BaseApi
+import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.TickerEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
@@ -16,7 +16,7 @@ import retrofit2.Response
 
 class TickerApi constructor(
     context: Context,
-    private var retrofit: TickerApiContract = CoinpaprikaApiFactory(context)
+    private var retrofit: TickerApiContract = CoinpaprikaApiFactory()
         .client()
         .create(TickerApiContract::class.java)
 ) : BaseApi(context), TickerApiContract {

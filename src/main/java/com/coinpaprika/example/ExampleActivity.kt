@@ -2,11 +2,8 @@ package com.coinpaprika.example
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.util.Log.i
-import com.coinpaprika.apiclient.GraphPeriods
-import com.coinpaprika.apiclient.api.CoinpaprikaAPI
-import com.coinpaprika.apiclient.api.GraphsAPI
+import com.coinpaprika.apiclient.api.CoinpaprikaApi
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -23,7 +20,7 @@ class ExampleActivity: Activity() {
     private fun makeCallToAPI() {
         // Coinpaprika API call
         compositeDisposable.add(
-            CoinpaprikaAPI(this)
+            CoinpaprikaApi(this)
                 .tickers()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -32,18 +29,6 @@ class ExampleActivity: Activity() {
                     { next -> for (ticker in next) {
                         i("ExampleActivity", "Ticker name is ${ticker.name} ")
                     }},
-                    { error -> error.printStackTrace() }
-                )
-        )
-
-        // Graphs API call
-        compositeDisposable.add(
-            GraphsAPI(this)
-                .chartSvg("btc-bitcoin", GraphPeriods.DAILY.period)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { next -> Log.i("ExampleActivity", "Example SVG file: $next") },
                     { error -> error.printStackTrace() }
                 )
         )

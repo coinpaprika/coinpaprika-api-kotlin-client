@@ -5,8 +5,8 @@
 package com.coinpaprika.apiclient.repository.ranking
 
 import android.content.Context
-import com.coinpaprika.apiclient.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.api.BaseApi
+import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.TopMoversEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
@@ -16,7 +16,7 @@ import retrofit2.Response
 
 class RankingApi constructor(
     context: Context,
-    private var retrofit: RankingApiContract = CoinpaprikaApiFactory(context)
+    private var retrofit: RankingApiContract = CoinpaprikaApiFactory()
         .client()
         .create(RankingApiContract::class.java)
 ) : BaseApi(context), RankingApiContract {

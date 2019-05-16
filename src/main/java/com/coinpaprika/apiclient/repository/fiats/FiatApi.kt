@@ -5,8 +5,8 @@
 package com.coinpaprika.apiclient.repository.fiats
 
 import android.content.Context
-import com.coinpaprika.apiclient.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.api.BaseApi
+import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.FiatEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
@@ -16,7 +16,7 @@ import retrofit2.Response
 
 class FiatApi constructor(
     context: Context,
-    private var retrofit: FiatApiContract = CoinpaprikaApiFactory(context)
+    private var retrofit: FiatApiContract = CoinpaprikaApiFactory()
         .client()
         .create(FiatApiContract::class.java)
 ) : BaseApi(context), FiatApiContract {

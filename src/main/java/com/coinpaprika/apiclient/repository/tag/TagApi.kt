@@ -5,8 +5,8 @@
 package com.coinpaprika.apiclient.repository.tag
 
 import android.content.Context
-import com.coinpaprika.apiclient.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.api.BaseApi
+import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.TagEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
@@ -16,7 +16,7 @@ import retrofit2.Response
 
 class TagApi constructor(
     context: Context,
-    private var retrofit: TagApiContract = CoinpaprikaApiFactory(context)
+    private var retrofit: TagApiContract = CoinpaprikaApiFactory()
         .client()
         .create(TagApiContract::class.java)
 ) : BaseApi(context), TagApiContract {
