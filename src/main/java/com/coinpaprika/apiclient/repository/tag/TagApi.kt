@@ -9,8 +9,7 @@ import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.TagEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.exception.ServerConnectionError
-import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.extensions.handleResponse
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -25,22 +24,7 @@ class TagApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getTag(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getTag(id).handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
@@ -55,22 +39,7 @@ class TagApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getTags()
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getTags().handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))

@@ -10,8 +10,7 @@ import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.ExchangeEntity
 import com.coinpaprika.apiclient.entity.MarketEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.exception.ServerConnectionError
-import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.extensions.handleResponse
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -26,22 +25,7 @@ class ExchangeApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getExchanges()
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getExchanges().handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
@@ -56,22 +40,7 @@ class ExchangeApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getMarkets(exchangeId)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getMarkets(exchangeId).handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))

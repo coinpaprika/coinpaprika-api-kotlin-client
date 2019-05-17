@@ -9,8 +9,7 @@ import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.*
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.exception.ServerConnectionError
-import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.extensions.handleResponse
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -25,22 +24,7 @@ class CoinApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getCoin(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getCoin(id).handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
@@ -55,22 +39,7 @@ class CoinApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getCoins()
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getCoins().handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
@@ -85,22 +54,7 @@ class CoinApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getEvents(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getEvents(id).handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
@@ -115,22 +69,7 @@ class CoinApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getExchanges(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getExchanges(id).handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
@@ -145,22 +84,7 @@ class CoinApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getMarkets(id, quotes)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getMarkets(id, quotes).handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
@@ -175,22 +99,7 @@ class CoinApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getTweets(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getTweets(id).handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
@@ -205,22 +114,7 @@ class CoinApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.addEvent(cryptoId, event)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.addEvent(cryptoId, event).handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))

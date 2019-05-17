@@ -9,8 +9,7 @@ import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.TickerEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.exception.ServerConnectionError
-import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.extensions.handleResponse
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -25,23 +24,7 @@ class TickerApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getTicker(id)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                    emitter.onComplete()
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getTicker(id).handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
@@ -56,23 +39,7 @@ class TickerApi constructor(
         return Observable.create { emitter ->
             if (isThereInternetConnection()) {
                 try {
-                    retrofit.getTickers(quotes)
-                        .doOnNext {
-                            if (!emitter.isDisposed) {
-                                if (it.isSuccessful) {
-                                    emitter.onNext(it)
-                                    emitter.onComplete()
-                                } else {
-                                    when (it.code()) {
-                                        429 -> emitter.onError(TooManyRequestsError())
-                                        else -> emitter.onError(ServerConnectionError())
-                                    }
-                                }
-                            }
-                        }
-                        .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
-                        .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
-                        .subscribe({}, { error -> error.printStackTrace() })
+                    retrofit.getTickers(quotes).handleResponse(emitter)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.onError(NetworkConnectionException(e.cause))
