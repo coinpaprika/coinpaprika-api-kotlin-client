@@ -36,6 +36,12 @@ android {
     }
 
     buildTypes {
+        alpha {
+            debuggable false
+        }
+        beta {
+            debuggable false
+        }
         release {
             minifyEnabled true
         }
