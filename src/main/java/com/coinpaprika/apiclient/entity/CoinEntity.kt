@@ -24,4 +24,5 @@ data class CoinEntity(val id: String,
                       val type: String,
                       val team: List<TeamMemberEntity>?,
                       val links: LinksEntity?,
-                      val whitepaper: WhitepaperEntity?): Parcelable
+                      val whitepaper: WhitepaperEntity?,
+                      @SerializedName("last_data_at") val lastDataUpdate: String?): Parcelable
