@@ -8,8 +8,7 @@ import android.content.Context
 import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.SearchEntity
-import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.extensions.handleResponse
+import com.coinpaprika.apiclient.extensions.safeApiCallRaw
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -21,17 +20,6 @@ class SearchApi constructor(
 ) : BaseApi(context), SearchApiContract {
 
     override fun getSearches(query: String): Observable<Response<SearchEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getSearches(query).handleResponse(emitter)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+        return safeApiCallRaw { retrofit.getSearches(query) }
     }
 }

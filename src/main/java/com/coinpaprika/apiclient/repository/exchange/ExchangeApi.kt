@@ -9,8 +9,7 @@ import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.ExchangeEntity
 import com.coinpaprika.apiclient.entity.MarketEntity
-import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.extensions.handleResponse
+import com.coinpaprika.apiclient.extensions.safeApiCallRaw
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -22,32 +21,10 @@ class ExchangeApi constructor(
 ) : BaseApi(context), ExchangeApiContract {
 
     override fun getExchanges(): Observable<Response<List<ExchangeEntity>>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getExchanges().handleResponse(emitter)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+        return safeApiCallRaw { retrofit.getExchanges() }
     }
 
     override fun getMarkets(exchangeId: String): Observable<Response<List<MarketEntity>>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getMarkets(exchangeId).handleResponse(emitter)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+        return safeApiCallRaw { retrofit.getMarkets(exchangeId) }
     }
 }

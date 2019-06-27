@@ -8,8 +8,6 @@ import android.content.Context
 import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.FiatEntity
-import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.extensions.handleResponse
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -19,18 +17,8 @@ class FiatApi constructor(
         .client()
         .create(FiatApiContract::class.java)
 ) : BaseApi(context), FiatApiContract {
+
     override fun getFiats(): Observable<Response<List<FiatEntity>>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getFiats().handleResponse(emitter)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+        return retrofit.getFiats()
     }
 }

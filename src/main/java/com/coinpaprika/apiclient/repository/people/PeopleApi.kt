@@ -9,8 +9,7 @@ import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.PersonEntity
 import com.coinpaprika.apiclient.entity.TweetEntity
-import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.extensions.handleResponse
+import com.coinpaprika.apiclient.extensions.safeApiCallRaw
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -22,32 +21,10 @@ class PeopleApi constructor(
 ) : BaseApi(context), PeopleApiContract {
 
     override fun getPerson(id: String): Observable<Response<PersonEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getPerson(id).handleResponse(emitter)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+        return safeApiCallRaw { retrofit.getPerson(id) }
     }
 
     override fun getTweets(id: String): Observable<Response<List<TweetEntity>>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getTweets(id).handleResponse(emitter)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+        return safeApiCallRaw { retrofit.getTweets(id) }
     }
 }

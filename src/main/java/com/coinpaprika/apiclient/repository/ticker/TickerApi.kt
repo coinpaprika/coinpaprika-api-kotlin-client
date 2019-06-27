@@ -7,9 +7,8 @@ package com.coinpaprika.apiclient.repository.ticker
 import android.content.Context
 import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
+import com.coinpaprika.apiclient.extensions.safeApiCallRaw
 import com.coinpaprika.apiclient.entity.TickerEntity
-import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.extensions.handleResponse
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -21,32 +20,10 @@ class TickerApi constructor(
 ) : BaseApi(context), TickerApiContract {
 
     override fun getTicker(id: String, quotes: String): Observable<Response<TickerEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getTicker(id).handleResponse(emitter)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+        return safeApiCallRaw { retrofit.getTicker(id) }
     }
 
     override fun getTickers(quotes: String): Observable<Response<List<TickerEntity>>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getTickers(quotes).handleResponse(emitter)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+        return safeApiCallRaw { retrofit.getTickers(quotes) }
     }
 }

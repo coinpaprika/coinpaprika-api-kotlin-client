@@ -8,8 +8,7 @@ import android.content.Context
 import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.TagEntity
-import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.extensions.handleResponse
+import com.coinpaprika.apiclient.extensions.safeApiCallRaw
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -21,32 +20,10 @@ class TagApi constructor(
 ) : BaseApi(context), TagApiContract {
 
     override fun getTag(id: String): Observable<Response<TagEntity>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getTag(id).handleResponse(emitter)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+        return safeApiCallRaw { retrofit.getTag(id) }
     }
 
     override fun getTags(): Observable<Response<List<TagEntity>>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getTags().handleResponse(emitter)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+        return safeApiCallRaw { retrofit.getTags() }
     }
 }

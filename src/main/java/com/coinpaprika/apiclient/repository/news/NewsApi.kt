@@ -8,8 +8,7 @@ import android.content.Context
 import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.NewsEntity
-import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.extensions.handleResponse
+import com.coinpaprika.apiclient.extensions.safeApiCallRaw
 import io.reactivex.Observable
 import retrofit2.Response
 
@@ -19,18 +18,8 @@ class NewsApi constructor(
         .client()
         .create(NewsApiContract::class.java)
 ) : BaseApi(context), NewsApiContract {
+
     override fun getNews(limit: Int): Observable<Response<List<NewsEntity>>> {
-        return Observable.create { emitter ->
-            if (isThereInternetConnection()) {
-                try {
-                    retrofit.getNews(limit).handleResponse(emitter)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emitter.onError(NetworkConnectionException(e.cause))
-                }
-            } else {
-                emitter.onError(NetworkConnectionException())
-            }
-        }
+        return safeApiCallRaw { retrofit.getNews(limit) }
     }
 }
