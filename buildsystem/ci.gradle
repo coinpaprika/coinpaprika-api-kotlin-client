@@ -11,7 +11,7 @@ ext {
     siteUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-client'
     gitUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-client.git'
 
-    libraryVersion = '0.3.1'
+    libraryVersion = '0.3.4'
 
     developerId = 'coinpaprika'
     developerName = 'Piotr Kostecki'
@@ -58,27 +58,10 @@ install {
     }
 }
 
-if (project.hasProperty("android")) { // Android libraries
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from android.sourceSets.main.java.srcDirs
-    }
-
-//    task javadoc(type: Javadoc) {
-//        source = android.sourceSets.main.java.srcDirs
-//        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-//    }
-} else { // Java libraries
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
 }
-
-//task sourcesJar(type: Jar) {
-//    classifier = 'sources'
-//    from android.sourceSets.main.java.srcDirs
-//}
 
 artifacts {
     archives sourcesJar
@@ -103,9 +86,9 @@ bintray {
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = allLicenses
-//        dryRun = false
-//        publish = true
-//        override = false
+        dryRun = false
+        publish = true
+        override = false
         publicDownloadNumbers = true
         version {
             desc = libraryDescription
