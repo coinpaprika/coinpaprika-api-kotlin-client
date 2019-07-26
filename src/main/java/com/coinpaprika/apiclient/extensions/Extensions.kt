@@ -15,7 +15,7 @@ import retrofit2.Response
 import java.lang.Exception
 
 
-fun <T : Any> BaseApi.safeApiCallRaw(call: () -> Observable<Response<T>>): Observable<Response<T>> {
+internal fun <T : Any> BaseApi.safeApiCallRaw(call: () -> Observable<Response<T>>): Observable<Response<T>> {
     return Observable.create {
         if (!this.isThereInternetConnection()) {
             it.onError(NetworkConnectionException())
@@ -29,7 +29,7 @@ fun <T : Any> BaseApi.safeApiCallRaw(call: () -> Observable<Response<T>>): Obser
     }
 }
 
-fun <T> Observable<Response<T>>.handleRawResponse(emitter: ObservableEmitter<Response<T>>): Disposable {
+internal fun <T> Observable<Response<T>>.handleRawResponse(emitter: ObservableEmitter<Response<T>>): Disposable {
     return this
         .doOnNext {
             if (emitter.isDisposed) return@doOnNext

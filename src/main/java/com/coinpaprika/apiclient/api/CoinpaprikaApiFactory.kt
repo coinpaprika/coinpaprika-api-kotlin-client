@@ -22,14 +22,11 @@ open class CoinpaprikaApiFactory {
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(
-                createClient()
-                    .build()
-            )
+            .client(createClient().build())
             .build()
     }
 
-    protected fun createClient(): OkHttpClient.Builder {
+    private fun createClient(): OkHttpClient.Builder {
         return OkHttpClient.Builder()
             .protocols(listOf(Protocol.HTTP_1_1, Protocol.HTTP_2))
             .writeTimeout(20000, TimeUnit.MILLISECONDS)
