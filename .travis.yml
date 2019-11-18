@@ -19,6 +19,9 @@ android:
     - extra-android-m2repository
     - extra-google-m2repository
     - extra-android-support
+  licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
 
 before_script:
   - touch local.properties
