@@ -20,11 +20,15 @@ android:
     - extra-google-m2repository
     - extra-android-support
   licenses:
+    - 'android-sdk-preview-license-52d11cd2'
     - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
 
 before_script:
   - touch local.properties
+  - touch $HOME/.android/repositories.cfg
+  - yes | sdkmanager "platforms;android-28"
+  - yes | sdkmanager "build-tools;28.0.3"
 script:
   - chmod +x gradlew
   - "./gradlew wrapper --gradle-version 5.5.1"
