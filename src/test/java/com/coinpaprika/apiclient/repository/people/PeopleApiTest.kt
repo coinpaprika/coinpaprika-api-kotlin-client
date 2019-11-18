@@ -10,7 +10,7 @@ import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -45,7 +45,7 @@ class PeopleApiTest {
     @Test
     fun `get person too many requests error`() {
         val response = Response.error<PersonEntity>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getPerson(FAKE_PERSON_ID))
             .thenReturn(Observable.just(response))
@@ -60,7 +60,7 @@ class PeopleApiTest {
     @Test
     fun `get person server error`() {
         val response = Response.error<PersonEntity>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getPerson(FAKE_PERSON_ID))
             .thenReturn(Observable.just(response))

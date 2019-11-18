@@ -10,7 +10,7 @@ import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -46,7 +46,7 @@ class SearchApiTest {
     @Test
     fun `get searches too many requests error`() {
         val response = Response.error<SearchEntity>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getSearches(FAKE_QUERY))
             .thenReturn(Observable.just(response))
@@ -61,7 +61,7 @@ class SearchApiTest {
     @Test
     fun `get searches server error`() {
         val response = Response.error<SearchEntity>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getSearches(FAKE_QUERY))
             .thenReturn(Observable.just(response))

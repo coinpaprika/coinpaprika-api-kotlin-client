@@ -10,7 +10,7 @@ import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -129,7 +129,7 @@ class CoinApiTest {
     @Test
     fun `get coin too many requests error`() {
         val response = Response.error<CoinEntity>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -144,7 +144,7 @@ class CoinApiTest {
     @Test
     fun `get coins too many requests error`() {
         val response = Response.error<List<CoinEntity>>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getCoins())
             .thenReturn(Observable.just(response))
@@ -159,7 +159,7 @@ class CoinApiTest {
     @Test
     fun `get events too many requests error`() {
         val response = Response.error<List<EventEntity>>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getEvents(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -174,7 +174,7 @@ class CoinApiTest {
     @Test
     fun `get exchanges too many requests error`() {
         val response = Response.error<List<ExchangeEntity>>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getExchanges(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -189,7 +189,7 @@ class CoinApiTest {
     @Test
     fun `get markets too many requests error`() {
         val response = Response.error<List<MarketEntity>>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES))
             .thenReturn(Observable.just(response))
@@ -204,7 +204,7 @@ class CoinApiTest {
     @Test
     fun `get tweets too many requests error`() {
         val response = Response.error<List<TweetEntity>>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getTweets(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -219,7 +219,7 @@ class CoinApiTest {
     @Test
     fun `get coin server error`() {
         val response = Response.error<CoinEntity>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -234,7 +234,7 @@ class CoinApiTest {
     @Test
     fun `get coins server error`() {
         val response = Response.error<List<CoinEntity>>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getCoins())
             .thenReturn(Observable.just(response))
@@ -249,7 +249,7 @@ class CoinApiTest {
     @Test
     fun `get events server error`() {
         val response = Response.error<List<EventEntity>>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getEvents(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -264,7 +264,7 @@ class CoinApiTest {
     @Test
     fun `get exchanges server error`() {
         val response = Response.error<List<ExchangeEntity>>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getExchanges(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -279,7 +279,7 @@ class CoinApiTest {
     @Test
     fun `get markets server error`() {
         val response = Response.error<List<MarketEntity>>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES))
             .thenReturn(Observable.just(response))
@@ -294,7 +294,7 @@ class CoinApiTest {
     @Test
     fun `get tweets server error`() {
         val response = Response.error<List<TweetEntity>>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getTweets(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))

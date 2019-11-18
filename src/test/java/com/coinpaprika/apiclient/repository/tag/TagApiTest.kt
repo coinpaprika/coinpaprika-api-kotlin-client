@@ -10,7 +10,7 @@ import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -62,7 +62,7 @@ class TagApiTest {
     @Test
     fun `get tag too many requests error`() {
         val response = Response.error<TagEntity>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getTag(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -77,7 +77,7 @@ class TagApiTest {
     @Test
     fun `get tags too many requests error`() {
         val response = Response.error<List<TagEntity>>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getTags())
             .thenReturn(Observable.just(response))
@@ -92,7 +92,7 @@ class TagApiTest {
     @Test
     fun `get tag server error`() {
         val response = Response.error<TagEntity>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getTag(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -107,7 +107,7 @@ class TagApiTest {
     @Test
     fun `get tags server error`() {
         val response = Response.error<List<TagEntity>>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getTags())
             .thenReturn(Observable.just(response))

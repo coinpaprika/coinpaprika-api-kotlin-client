@@ -10,7 +10,7 @@ import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -63,7 +63,7 @@ class TickerApiTest {
     @Test
     fun `get ticker too many requests error`() {
         val response = Response.error<TickerEntity>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getTicker(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -78,7 +78,7 @@ class TickerApiTest {
     @Test
     fun `get tickers too many requests error`() {
         val response = Response.error<List<TickerEntity>>(429,
-            ResponseBody.create(MediaType.parse("application/json"), "\"error\":\"too many requests\")"))
+            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
 
         `when`(mockApi.getTickers())
             .thenReturn(Observable.just(response))
@@ -93,7 +93,7 @@ class TickerApiTest {
     @Test
     fun `get ticker server error`() {
         val response = Response.error<TickerEntity>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getTicker(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -108,7 +108,7 @@ class TickerApiTest {
     @Test
     fun `get tickers server error`() {
         val response = Response.error<List<TickerEntity>>(404,
-            ResponseBody.create(MediaType.parse("text/html"), ""))
+            ResponseBody.create("application/json".toMediaType(), ""))
 
         `when`(mockApi.getTickers())
             .thenReturn(Observable.just(response))
