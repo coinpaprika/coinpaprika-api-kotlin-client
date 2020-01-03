@@ -19,19 +19,20 @@ class ExampleActivity: Activity() {
 
     private fun makeCallToAPI() {
         // Coinpaprika API call
-        compositeDisposable.add(
-            CoinpaprikaApi(this)
-                .tickers()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError { error -> error.printStackTrace() }
-                .subscribe(
-                    { next -> for (ticker in next) {
-                        i("ExampleActivity", "Ticker name is ${ticker.name} ")
-                    }},
-                    { error -> error.printStackTrace() }
-                )
-        )
+        // TODO write new example
+//        compositeDisposable.add(
+//            CoinpaprikaApi()
+//                .tickers()
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnError { error -> error.printStackTrace() }
+//                .subscribe(
+//                    { next -> for (ticker in next) {
+//                        i("ExampleActivity", "Ticker name is ${ticker.name} ")
+//                    }},
+//                    { error -> error.printStackTrace() }
+//                )
+//        )
     }
 
     override fun onDestroy() {

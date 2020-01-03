@@ -1,6 +1,5 @@
 package com.coinpaprika.apiclient.api
 
-import android.content.Context
 import com.coinpaprika.apiclient.entity.*
 import com.coinpaprika.apiclient.repository.coin.CoinApi
 import com.coinpaprika.apiclient.repository.fiats.FiatApi
@@ -13,27 +12,24 @@ import com.coinpaprika.apiclient.repository.tag.TagApi
 import com.coinpaprika.apiclient.repository.ticker.TickerApi
 import io.reactivex.Observable
 
-open class CoinpaprikaApi constructor(context: Context)
-    : BaseApi(context) {
+open class CoinpaprikaApi {
 
-    private var tickerApi = TickerApi(context)
-    private var coinApi = CoinApi(context)
-    private var tagApi = TagApi(context)
-    private var peopleApi = PeopleApi(context)
-    private var searchApi = SearchApi(context)
-    private var newsApi = NewsApi(context)
-    private var rankingApi = RankingApi(context)
-    private var globalApi = GlobalApi(context)
-    private var fiatApi = FiatApi(context)
+    private var tickerApi = TickerApi()
+    private var coinApi = CoinApi()
+    private var tagApi = TagApi()
+    private var peopleApi = PeopleApi()
+    private var searchApi = SearchApi()
+    private var newsApi = NewsApi()
+    private var rankingApi = RankingApi()
+    private var globalApi = GlobalApi()
+    private var fiatApi = FiatApi()
 
-    fun ticker(id: String): Observable<TickerEntity> {
-        return tickerApi.getTicker(id)
-            .map { it.body() }
+    suspend fun ticker(id: String, quotes: String? = null): TickerEntity {
+        return tickerApi.getTicker(id, quotes)
     }
 
-    fun tickers(): Observable<List<TickerEntity>> {
-        return tickerApi.getTickers()
-            .map { it.body() }
+    suspend fun tickers(quotes: String? = null): List<TickerEntity> {
+        return tickerApi.getTickers(quotes)
     }
 
     fun coin(id: String): Observable<CoinEntity> {

@@ -26,7 +26,7 @@ open class CoinpaprikaApiFactory {
             .build()
     }
 
-    private fun createClient(): OkHttpClient.Builder {
+    protected fun createClient(): OkHttpClient.Builder {
         return OkHttpClient.Builder()
             .protocols(listOf(Protocol.HTTP_1_1, Protocol.HTTP_2))
             .writeTimeout(20000, TimeUnit.MILLISECONDS)

@@ -1,29 +1,32 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 12:26
- */
-
 package com.coinpaprika.apiclient.repository.ticker
 
-import android.content.Context
-import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
-import com.coinpaprika.apiclient.extensions.safeApiCallRaw
 import com.coinpaprika.apiclient.entity.TickerEntity
-import io.reactivex.Observable
-import retrofit2.Response
+import com.coinpaprika.apiclient.extensions.handleCall
 
-class TickerApi constructor(
-    context: Context,
+class TickerApi {
+
     private var retrofit: TickerApiContract = CoinpaprikaApiFactory()
         .client()
         .create(TickerApiContract::class.java)
-) : BaseApi(context), TickerApiContract {
 
-    override fun getTicker(id: String, quotes: String): Observable<Response<TickerEntity>> {
-        return safeApiCallRaw { retrofit.getTicker(id) }
+    suspend fun getTicker(id: String, quotes: String? = null): TickerEntity {
+        return handleCall {
+            if (quotes != null) {
+                retrofit.getTicker(id, quotes)
+            } else {
+                retrofit.getTicker(id)
+            }
+        }
     }
 
-    override fun getTickers(quotes: String): Observable<Response<List<TickerEntity>>> {
-        return safeApiCallRaw { retrofit.getTickers(quotes) }
+    suspend fun getTickers(quotes: String? = null): List<TickerEntity> {
+        return handleCall {
+            if (quotes != null) {
+                retrofit.getTickers(quotes)
+            } else {
+                retrofit.getTickers()
+            }
+        }
     }
 }

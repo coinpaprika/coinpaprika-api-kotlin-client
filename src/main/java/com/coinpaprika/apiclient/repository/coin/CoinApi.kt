@@ -1,11 +1,5 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 12:12
- */
-
 package com.coinpaprika.apiclient.repository.coin
 
-import android.content.Context
-import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.*
 import com.coinpaprika.apiclient.extensions.safeApiCallRaw
@@ -13,11 +7,10 @@ import io.reactivex.Observable
 import retrofit2.Response
 
 class CoinApi constructor(
-    context: Context,
     private var retrofit: CoinApiContract = CoinpaprikaApiFactory()
         .client()
         .create(CoinApiContract::class.java)
-) : BaseApi(context), CoinApiContract {
+) : CoinApiContract {
 
     override fun getCoin(id: String): Observable<Response<CoinEntity>> {
         return safeApiCallRaw { retrofit.getCoin(id) }

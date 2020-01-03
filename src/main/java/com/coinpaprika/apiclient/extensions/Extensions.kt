@@ -4,7 +4,6 @@
 
 package com.coinpaprika.apiclient.extensions
 
-import com.coinpaprika.apiclient.api.BaseApi
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
@@ -12,15 +11,23 @@ import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.disposables.Disposable
 import retrofit2.Response
-import java.lang.Exception
 
+internal suspend fun <T : Any> handleCall(call: suspend () -> Response<T>): T {
+    val response = try {
+        call()
+    } catch (t: Throwable) {
+        throw NetworkConnectionException(t.cause)
+    }
+    if (response.isSuccessful) {
+        return response.body()!!
+    } else when (response.code()) {
+        429  -> throw TooManyRequestsError()
+        else -> throw ServerConnectionError()
+    }
+}
 
-internal fun <T : Any> BaseApi.safeApiCallRaw(call: () -> Observable<Response<T>>): Observable<Response<T>> {
+internal fun <T : Any> safeApiCallRaw(call: () -> Observable<Response<T>>): Observable<Response<T>> {
     return Observable.create {
-        if (!this.isThereInternetConnection()) {
-            it.onError(NetworkConnectionException())
-            return@create
-        }
         try {
             call().handleRawResponse(it)
         } catch (e: Exception) {
@@ -37,11 +44,12 @@ internal fun <T> Observable<Response<T>>.handleRawResponse(emitter: ObservableEm
                 emitter.onNext(it)
             } else {
                 when (it.code()) {
-                    429 -> emitter.onError(TooManyRequestsError())
+                    429  -> emitter.onError(TooManyRequestsError())
                     else -> emitter.onError(ServerConnectionError())
                 }
             }
         }
+        .onErrorResumeNext { it: Throwable -> Observable.error(NetworkConnectionException(it.cause)) }
         .doOnComplete { if (!emitter.isDisposed) emitter.onComplete() }
         .doOnError { if (!emitter.isDisposed) emitter.onError(it) }
         .subscribe({}, { error -> error.printStackTrace() })
