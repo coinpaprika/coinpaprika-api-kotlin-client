@@ -1,17 +1,12 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 16:38
- */
-
 package com.coinpaprika.apiclient.repository.people
 
-import android.content.Context
 import com.coinpaprika.apiclient.entity.PersonEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.repository.notFoundError
+import com.coinpaprika.apiclient.repository.tooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
@@ -22,9 +17,10 @@ import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
 class PeopleApiTest {
-    @Mock private lateinit var mockApi: PeopleApiContract
-    @Mock private lateinit var mockPerson: PersonEntity
-    @Mock private lateinit var mockContext: Context
+    @Mock
+    private lateinit var mockApi: PeopleApiContract
+    @Mock
+    private lateinit var mockPerson: PersonEntity
 
     @Test
     fun `get person happy case`() {
@@ -34,7 +30,7 @@ class PeopleApiTest {
         `when`(mockApi.getPerson(FAKE_PERSON_ID))
             .thenReturn(Observable.just(response))
 
-        val client = PeopleApi(mockContext, mockApi)
+        val client = PeopleApi(mockApi)
         client.getPerson(FAKE_PERSON_ID)
             .map { it.body() }
             .test()
@@ -44,13 +40,12 @@ class PeopleApiTest {
 
     @Test
     fun `get person too many requests error`() {
-        val response = Response.error<PersonEntity>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<PersonEntity>()
 
         `when`(mockApi.getPerson(FAKE_PERSON_ID))
             .thenReturn(Observable.just(response))
 
-        val client = PeopleApi(mockContext, mockApi)
+        val client = PeopleApi(mockApi)
         client.getPerson(FAKE_PERSON_ID)
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -59,13 +54,12 @@ class PeopleApiTest {
 
     @Test
     fun `get person server error`() {
-        val response = Response.error<PersonEntity>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<PersonEntity>()
 
         `when`(mockApi.getPerson(FAKE_PERSON_ID))
             .thenReturn(Observable.just(response))
 
-        val client = PeopleApi(mockContext, mockApi)
+        val client = PeopleApi(mockApi)
         client.getPerson(FAKE_PERSON_ID)
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -79,7 +73,7 @@ class PeopleApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = PeopleApi(mockContext, mockApi)
+        val client = PeopleApi(mockApi)
         client.getPerson(FAKE_PERSON_ID)
             .test()
             .assertError(NetworkConnectionException::class.java)

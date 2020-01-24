@@ -1,14 +1,11 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 16:24
- */
-
 package com.coinpaprika.apiclient.repository.news
 
-import android.content.Context
 import com.coinpaprika.apiclient.entity.NewsEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.repository.notFoundError
+import com.coinpaprika.apiclient.repository.tooManyRequestsError
 import io.reactivex.Observable
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
@@ -25,7 +22,6 @@ class NewsApiTest {
 
     @Mock private lateinit var mockApi: NewsApiContract
     @Mock lateinit var mockNews: NewsEntity
-    @Mock private lateinit var mockContext: Context
 
     @Test
     fun `get news happy case`() {
@@ -35,7 +31,7 @@ class NewsApiTest {
         `when`(mockApi.getNews(FAKE_LIMIT))
             .thenReturn(Observable.just(response))
 
-        val client = NewsApi(mockContext, mockApi)
+        val client = NewsApi(mockApi)
         client.getNews(FAKE_LIMIT)
             .map { it.body() }
             .test()
@@ -45,13 +41,12 @@ class NewsApiTest {
 
     @Test
     fun `get news too many requests error`() {
-        val response = Response.error<List<NewsEntity>>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<List<NewsEntity>>()
 
         `when`(mockApi.getNews(FAKE_LIMIT))
             .thenReturn(Observable.just(response))
 
-        val client = NewsApi(mockContext, mockApi)
+        val client = NewsApi(mockApi)
         client.getNews(FAKE_LIMIT)
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -60,13 +55,12 @@ class NewsApiTest {
 
     @Test
     fun `get news server error`() {
-        val response = Response.error<List<NewsEntity>>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<List<NewsEntity>>()
 
         `when`(mockApi.getNews(FAKE_LIMIT))
             .thenReturn(Observable.just(response))
 
-        val client = NewsApi(mockContext, mockApi)
+        val client = NewsApi(mockApi)
         client.getNews(FAKE_LIMIT)
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -80,7 +74,7 @@ class NewsApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = NewsApi(mockContext, mockApi)
+        val client = NewsApi(mockApi)
         client.getNews(FAKE_LIMIT)
             .test()
             .assertError(NetworkConnectionException::class.java)

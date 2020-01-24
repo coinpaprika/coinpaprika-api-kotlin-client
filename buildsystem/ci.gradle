@@ -14,7 +14,7 @@ ext {
     libraryVersion = '0.3.4'
 
     developerId = 'coinpaprika'
-    developerName = 'Piotr Kostecki'
+    developerName = 'CoinPaprika'
     developerEmail = 'it@greywizard.com'
 
     licenseName = 'The MIT License'
@@ -25,42 +25,37 @@ ext {
 group = publishedGroupId
 version = libraryVersion
 
-install {
-    repositories.mavenInstaller {
-        pom.project {
-            packaging 'aar'
-            groupId publishedGroupId
-            artifactId artifact
+def pomConfig = {
+    groupId publishedGroupId
+    artifactId artifact
 
-            name libraryName
-            description libraryDescription
-            url siteUrl
+    name libraryName
+    description libraryDescription
+    url siteUrl
 
-            licenses {
-                license {
-                    name licenseName
-                    url licenseUrl
-                }
-            }
-            developers {
-                developer {
-                    id developerId
-                    name developerName
-                    email developerEmail
-                }
-            }
-            scm {
-                connection gitUrl
-                developerConnection gitUrl
-                url siteUrl
-            }
+    licenses {
+        license {
+            name licenseName
+            url licenseUrl
         }
+    }
+    developers {
+        developer {
+            id developerId
+            name developerName
+            email developerEmail
+        }
+    }
+    scm {
+        connection gitUrl
+        developerConnection gitUrl
+        url siteUrl
     }
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
 }
 
 artifacts {
@@ -74,10 +69,22 @@ try {
     logger.warn('FileNotFoundException: local.properties file not found. Upload to bintray not possible.')
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact = sourcesJar
+            pom.withXml {
+                def root = asNode()
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
 bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
-
     configurations = ['archives']
     pkg {
         repo = bintrayRepo

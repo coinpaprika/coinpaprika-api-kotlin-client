@@ -12,7 +12,7 @@ import io.reactivex.ObservableEmitter
 import io.reactivex.disposables.Disposable
 import retrofit2.Response
 
-internal suspend fun <T : Any> handleCall(call: suspend () -> Response<T>): T {
+suspend fun <T : Any> handleCall(call: suspend () -> Response<T>): T {
     val response = try {
         call()
     } catch (t: Throwable) {

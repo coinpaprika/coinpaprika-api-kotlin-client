@@ -1,17 +1,12 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 16:48
- */
-
 package com.coinpaprika.apiclient.repository.search
 
-import android.content.Context
 import com.coinpaprika.apiclient.entity.SearchEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.repository.notFoundError
+import com.coinpaprika.apiclient.repository.tooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
@@ -23,9 +18,10 @@ import retrofit2.Response
 @RunWith(MockitoJUnitRunner::class)
 class SearchApiTest {
 
-    @Mock private lateinit var mockApi: SearchApiContract
-    @Mock lateinit var mockSearches: SearchEntity
-    @Mock private lateinit var mockContext: Context
+    @Mock
+    private lateinit var mockApi: SearchApiContract
+    @Mock
+    lateinit var mockSearches: SearchEntity
 
     @Test
     fun `get searches happy case`() {
@@ -35,7 +31,7 @@ class SearchApiTest {
         `when`(mockApi.getSearches(FAKE_QUERY))
             .thenReturn(Observable.just(response))
 
-        val client = SearchApi(mockContext, mockApi)
+        val client = SearchApi(mockApi)
         client.getSearches(FAKE_QUERY)
             .map { it.body() }
             .test()
@@ -45,13 +41,12 @@ class SearchApiTest {
 
     @Test
     fun `get searches too many requests error`() {
-        val response = Response.error<SearchEntity>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<SearchEntity>()
 
         `when`(mockApi.getSearches(FAKE_QUERY))
             .thenReturn(Observable.just(response))
 
-        val client = SearchApi(mockContext, mockApi)
+        val client = SearchApi(mockApi)
         client.getSearches(FAKE_QUERY)
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -60,13 +55,12 @@ class SearchApiTest {
 
     @Test
     fun `get searches server error`() {
-        val response = Response.error<SearchEntity>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<SearchEntity>()
 
         `when`(mockApi.getSearches(FAKE_QUERY))
             .thenReturn(Observable.just(response))
 
-        val client = SearchApi(mockContext, mockApi)
+        val client = SearchApi(mockApi)
         client.getSearches(FAKE_QUERY)
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -80,7 +74,7 @@ class SearchApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = SearchApi(mockContext, mockApi)
+        val client = SearchApi(mockApi)
         client.getSearches(FAKE_QUERY)
             .test()
             .assertError(NetworkConnectionException::class.java)

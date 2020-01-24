@@ -1,17 +1,12 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 16:51
- */
-
 package com.coinpaprika.apiclient.repository.coin
 
-import android.content.Context
 import com.coinpaprika.apiclient.entity.*
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.repository.notFoundError
+import com.coinpaprika.apiclient.repository.tooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
@@ -22,13 +17,18 @@ import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
 class CoinApiTest {
-    @Mock private lateinit var mockApi: CoinApiContract
-    @Mock private lateinit var mockCoin: CoinEntity
-    @Mock private lateinit var mockEvent: EventEntity
-    @Mock private lateinit var mockExchange: ExchangeEntity
-    @Mock private lateinit var mockMarket: MarketEntity
-    @Mock private lateinit var mockTweet: TweetEntity
-    @Mock private lateinit var mockContext: Context
+    @Mock
+    private lateinit var mockApi: CoinApiContract
+    @Mock
+    private lateinit var mockCoin: CoinEntity
+    @Mock
+    private lateinit var mockEvent: EventEntity
+    @Mock
+    private lateinit var mockExchange: ExchangeEntity
+    @Mock
+    private lateinit var mockMarket: MarketEntity
+    @Mock
+    private lateinit var mockTweet: TweetEntity
 
     @Test
     fun `get coin happy case`() {
@@ -38,7 +38,7 @@ class CoinApiTest {
         `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getCoin(FAKE_CRYPTOCURRENCY_ID)
             .map { it.body() }
             .test()
@@ -54,7 +54,7 @@ class CoinApiTest {
         `when`(mockApi.getCoins())
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getCoins()
             .map { it.body() }
             .test()
@@ -70,7 +70,7 @@ class CoinApiTest {
         `when`(mockApi.getEvents(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getEvents(FAKE_CRYPTOCURRENCY_ID)
             .map { it.body() }
             .test()
@@ -86,7 +86,7 @@ class CoinApiTest {
         `when`(mockApi.getExchanges(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getExchanges(FAKE_CRYPTOCURRENCY_ID)
             .map { it.body() }
             .test()
@@ -102,7 +102,7 @@ class CoinApiTest {
         `when`(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES)
             .map { it.body() }
             .test()
@@ -118,7 +118,7 @@ class CoinApiTest {
         `when`(mockApi.getTweets(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getTweets(FAKE_CRYPTOCURRENCY_ID)
             .map { it.body() }
             .test()
@@ -128,13 +128,12 @@ class CoinApiTest {
 
     @Test
     fun `get coin too many requests error`() {
-        val response = Response.error<CoinEntity>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<CoinEntity>()
 
         `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getCoin(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -143,13 +142,12 @@ class CoinApiTest {
 
     @Test
     fun `get coins too many requests error`() {
-        val response = Response.error<List<CoinEntity>>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<List<CoinEntity>>()
 
         `when`(mockApi.getCoins())
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getCoins()
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -158,13 +156,12 @@ class CoinApiTest {
 
     @Test
     fun `get events too many requests error`() {
-        val response = Response.error<List<EventEntity>>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<List<EventEntity>>()
 
         `when`(mockApi.getEvents(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getEvents(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -173,13 +170,12 @@ class CoinApiTest {
 
     @Test
     fun `get exchanges too many requests error`() {
-        val response = Response.error<List<ExchangeEntity>>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<List<ExchangeEntity>>()
 
         `when`(mockApi.getExchanges(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getExchanges(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -188,13 +184,12 @@ class CoinApiTest {
 
     @Test
     fun `get markets too many requests error`() {
-        val response = Response.error<List<MarketEntity>>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<List<MarketEntity>>()
 
         `when`(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES)
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -203,13 +198,12 @@ class CoinApiTest {
 
     @Test
     fun `get tweets too many requests error`() {
-        val response = Response.error<List<TweetEntity>>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<List<TweetEntity>>()
 
         `when`(mockApi.getTweets(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getTweets(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -218,13 +212,12 @@ class CoinApiTest {
 
     @Test
     fun `get coin server error`() {
-        val response = Response.error<CoinEntity>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<CoinEntity>()
 
         `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getCoin(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -233,13 +226,12 @@ class CoinApiTest {
 
     @Test
     fun `get coins server error`() {
-        val response = Response.error<List<CoinEntity>>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<List<CoinEntity>>()
 
         `when`(mockApi.getCoins())
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getCoins()
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -248,13 +240,12 @@ class CoinApiTest {
 
     @Test
     fun `get events server error`() {
-        val response = Response.error<List<EventEntity>>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<List<EventEntity>>()
 
         `when`(mockApi.getEvents(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getEvents(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -263,13 +254,12 @@ class CoinApiTest {
 
     @Test
     fun `get exchanges server error`() {
-        val response = Response.error<List<ExchangeEntity>>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<List<ExchangeEntity>>()
 
         `when`(mockApi.getExchanges(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getExchanges(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -278,13 +268,12 @@ class CoinApiTest {
 
     @Test
     fun `get markets server error`() {
-        val response = Response.error<List<MarketEntity>>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<List<MarketEntity>>()
 
         `when`(mockApi.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES)
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -293,13 +282,12 @@ class CoinApiTest {
 
     @Test
     fun `get tweets server error`() {
-        val response = Response.error<List<TweetEntity>>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<List<TweetEntity>>()
 
         `when`(mockApi.getTweets(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getTweets(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -313,7 +301,7 @@ class CoinApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getCoin(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(NetworkConnectionException::class.java)
@@ -327,7 +315,7 @@ class CoinApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getCoins()
             .test()
             .assertError(NetworkConnectionException::class.java)
@@ -341,7 +329,7 @@ class CoinApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getEvents(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(NetworkConnectionException::class.java)
@@ -355,7 +343,7 @@ class CoinApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getExchanges(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(NetworkConnectionException::class.java)
@@ -369,7 +357,7 @@ class CoinApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES)
             .test()
             .assertError(NetworkConnectionException::class.java)
@@ -383,7 +371,7 @@ class CoinApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = CoinApi(mockContext, mockApi)
+        val client = CoinApi(mockApi)
         client.getTweets(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(NetworkConnectionException::class.java)

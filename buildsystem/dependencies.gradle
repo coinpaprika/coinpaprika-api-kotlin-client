@@ -1,21 +1,6 @@
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-        maven { url "https://jitpack.io" }
-    }
-}
-
 ext {
-    // Android
-    androidBuildToolsVersion = '29.0.2'
-    androidMinSdkVersion = 16
-    androidTargetSdkVersion = 29
-    androidCompileSdkVersion = 29
-
     // Kotlin
-    kotlinVersion = '1.3.41'
+    kotlinVersion = '1.3.61'
 
     // Reactive programming
     rxKotlinVersion = '2.4.0'
@@ -32,10 +17,7 @@ ext {
 
     // Testing
     jUnitVersion = '4.12'
-    testCoreVersion = '1.2.0'
-    testRunnerVersion = '1.2.0'
-    espressoCoreVersion = '3.2.0'
-    mockitoVersion = '3.1.0'
+    mockitoVersion = '3.2.4'
 
     apiDependencies = [
             // Kotlin
@@ -44,7 +26,6 @@ ext {
             // Reactive programming
             rxKotlin:               "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
             rxJava:                 "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
-            rxAndroid:              "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
             retrofitRxJavaAdapter:  "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${retrofitRxJavaAdapterVersion}",
 
             // Networking
@@ -56,9 +37,6 @@ ext {
 
             // Testing
             junit:                  "junit:junit:${jUnitVersion}",
-            testCore:               "androidx.test:core:${testCoreVersion}",
-            testRunner:             "androidx.test:runner:${testRunnerVersion}",
-            espresso:               "androidx.test.espresso:espresso-core:${espressoCoreVersion}",
-            mockito:                "org.mockito:mockito-core:${mockitoVersion}",
+            mockito:                "org.mockito:mockito-core:${mockitoVersion}"
     ]
 }

@@ -1,17 +1,12 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 16:45
- */
-
 package com.coinpaprika.apiclient.repository.ranking
 
-import android.content.Context
 import com.coinpaprika.apiclient.entity.TopMoversEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.repository.notFoundError
+import com.coinpaprika.apiclient.repository.tooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
@@ -23,9 +18,10 @@ import retrofit2.Response
 @RunWith(MockitoJUnitRunner::class)
 class RankingApiTest {
 
-    @Mock private lateinit var mockApi: RankingApiContract
-    @Mock lateinit var mockMovers: TopMoversEntity
-    @Mock private lateinit var mockContext: Context
+    @Mock
+    private lateinit var mockApi: RankingApiContract
+    @Mock
+    lateinit var mockMovers: TopMoversEntity
 
     @Test
     fun `get movers happy case`() {
@@ -36,7 +32,7 @@ class RankingApiTest {
         `when`(mockApi.getTop10Movers(type))
             .thenReturn(Observable.just(response))
 
-        val client = RankingApi(mockContext, mockApi)
+        val client = RankingApi(mockApi)
         client.getTop10Movers(type)
             .map { it.body() }
             .test()
@@ -46,14 +42,13 @@ class RankingApiTest {
 
     @Test
     fun `get movers too many requests error`() {
-        val response = Response.error<TopMoversEntity>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<TopMoversEntity>()
         val type = "price"
 
         `when`(mockApi.getTop10Movers(type))
             .thenReturn(Observable.just(response))
 
-        val client = RankingApi(mockContext, mockApi)
+        val client = RankingApi(mockApi)
         client.getTop10Movers(type)
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -62,14 +57,13 @@ class RankingApiTest {
 
     @Test
     fun `get movers server error`() {
-        val response = Response.error<TopMoversEntity>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<TopMoversEntity>()
         val type = "price"
 
         `when`(mockApi.getTop10Movers(type))
             .thenReturn(Observable.just(response))
 
-        val client = RankingApi(mockContext, mockApi)
+        val client = RankingApi(mockApi)
         client.getTop10Movers(type)
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -84,7 +78,7 @@ class RankingApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = RankingApi(mockContext, mockApi)
+        val client = RankingApi(mockApi)
         client.getTop10Movers(type)
             .test()
             .assertError(NetworkConnectionException::class.java)

@@ -1,17 +1,12 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 16:31
- */
-
 package com.coinpaprika.apiclient.repository.tag
 
-import android.content.Context
 import com.coinpaprika.apiclient.entity.TagEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.repository.notFoundError
+import com.coinpaprika.apiclient.repository.tooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
@@ -23,9 +18,10 @@ import retrofit2.Response
 @RunWith(MockitoJUnitRunner::class)
 class TagApiTest {
 
-    @Mock private lateinit var mockApi: TagApiContract
-    @Mock lateinit var mockTag: TagEntity
-    @Mock private lateinit var mockContext: Context
+    @Mock
+    private lateinit var mockApi: TagApiContract
+    @Mock
+    lateinit var mockTag: TagEntity
 
     @Test
     fun `get tag happy case`() {
@@ -35,7 +31,7 @@ class TagApiTest {
         `when`(mockApi.getTag(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = TagApi(mockContext, mockApi)
+        val client = TagApi(mockApi)
         client.getTag(FAKE_CRYPTOCURRENCY_ID)
             .map { it.body() }
             .test()
@@ -51,7 +47,7 @@ class TagApiTest {
         `when`(mockApi.getTags())
             .thenReturn(Observable.just(response))
 
-        val client = TagApi(mockContext, mockApi)
+        val client = TagApi(mockApi)
         client.getTags()
             .map { it.body() }
             .test()
@@ -61,13 +57,12 @@ class TagApiTest {
 
     @Test
     fun `get tag too many requests error`() {
-        val response = Response.error<TagEntity>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<TagEntity>()
 
         `when`(mockApi.getTag(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = TagApi(mockContext, mockApi)
+        val client = TagApi(mockApi)
         client.getTag(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -76,13 +71,12 @@ class TagApiTest {
 
     @Test
     fun `get tags too many requests error`() {
-        val response = Response.error<List<TagEntity>>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<List<TagEntity>>()
 
         `when`(mockApi.getTags())
             .thenReturn(Observable.just(response))
 
-        val client = TagApi(mockContext, mockApi)
+        val client = TagApi(mockApi)
         client.getTags()
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -91,13 +85,12 @@ class TagApiTest {
 
     @Test
     fun `get tag server error`() {
-        val response = Response.error<TagEntity>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<TagEntity>()
 
         `when`(mockApi.getTag(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
 
-        val client = TagApi(mockContext, mockApi)
+        val client = TagApi(mockApi)
         client.getTag(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -106,13 +99,12 @@ class TagApiTest {
 
     @Test
     fun `get tags server error`() {
-        val response = Response.error<List<TagEntity>>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<List<TagEntity>>()
 
         `when`(mockApi.getTags())
             .thenReturn(Observable.just(response))
 
-        val client = TagApi(mockContext, mockApi)
+        val client = TagApi(mockApi)
         client.getTags()
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -126,7 +118,7 @@ class TagApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = TagApi(mockContext, mockApi)
+        val client = TagApi(mockApi)
         client.getTag(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(NetworkConnectionException::class.java)
@@ -140,7 +132,7 @@ class TagApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = TagApi(mockContext, mockApi)
+        val client = TagApi(mockApi)
         client.getTags()
             .test()
             .assertError(NetworkConnectionException::class.java)

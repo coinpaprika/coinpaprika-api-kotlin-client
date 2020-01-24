@@ -1,17 +1,12 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 16:42
- */
-
 package com.coinpaprika.apiclient.repository.global
 
-import android.content.Context
 import com.coinpaprika.apiclient.entity.GlobalStatsEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
 import com.coinpaprika.apiclient.exception.ServerConnectionError
 import com.coinpaprika.apiclient.exception.TooManyRequestsError
+import com.coinpaprika.apiclient.repository.notFoundError
+import com.coinpaprika.apiclient.repository.tooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
@@ -25,7 +20,6 @@ class NewsApiTest {
 
     @Mock private lateinit var mockApi: GlobalApiContract
     @Mock lateinit var mockGlobal: GlobalStatsEntity
-    @Mock private lateinit var mockContext: Context
 
     @Test
     fun `get global stats happy case`() {
@@ -35,7 +29,7 @@ class NewsApiTest {
         `when`(mockApi.getGlobal())
             .thenReturn(Observable.just(response))
 
-        val client = GlobalApi(mockContext, mockApi)
+        val client = GlobalApi(mockApi)
         client.getGlobal()
             .map { it.body() }
             .test()
@@ -45,13 +39,12 @@ class NewsApiTest {
 
     @Test
     fun `get global stats too many requests error`() {
-        val response = Response.error<GlobalStatsEntity>(429,
-            ResponseBody.create("application/json".toMediaType(), "\"error\":\"too many requests\")"))
+        val response = tooManyRequestsError<GlobalStatsEntity>()
 
         `when`(mockApi.getGlobal())
             .thenReturn(Observable.just(response))
 
-        val client = GlobalApi(mockContext, mockApi)
+        val client = GlobalApi(mockApi)
         client.getGlobal()
             .test()
             .assertError(TooManyRequestsError::class.java)
@@ -60,13 +53,12 @@ class NewsApiTest {
 
     @Test
     fun `get global stats server error`() {
-        val response = Response.error<GlobalStatsEntity>(404,
-            ResponseBody.create("application/json".toMediaType(), ""))
+        val response = notFoundError<GlobalStatsEntity>()
 
         `when`(mockApi.getGlobal())
             .thenReturn(Observable.just(response))
 
-        val client = GlobalApi(mockContext, mockApi)
+        val client = GlobalApi(mockApi)
         client.getGlobal()
             .test()
             .assertError(ServerConnectionError::class.java)
@@ -80,7 +72,7 @@ class NewsApiTest {
                 throw NetworkConnectionException()
             }
 
-        val client = GlobalApi(mockContext, mockApi)
+        val client = GlobalApi(mockApi)
         client.getGlobal()
             .test()
             .assertError(NetworkConnectionException::class.java)
