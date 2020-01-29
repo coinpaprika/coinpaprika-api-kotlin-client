@@ -22,6 +22,8 @@ class CoinApiTest {
     @Mock
     private lateinit var mockCoin: CoinEntity
     @Mock
+    private lateinit var mockDetailsCoin: CoinDetailsEntity
+    @Mock
     private lateinit var mockEvent: EventEntity
     @Mock
     private lateinit var mockExchange: ExchangeEntity
@@ -32,7 +34,7 @@ class CoinApiTest {
 
     @Test
     fun `get coin happy case`() {
-        val coin = mockCoin
+        val coin = mockDetailsCoin
         val response = Response.success(coin)
 
         `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
@@ -128,7 +130,7 @@ class CoinApiTest {
 
     @Test
     fun `get coin too many requests error`() {
-        val response = tooManyRequestsError<CoinEntity>()
+        val response = tooManyRequestsError<CoinDetailsEntity>()
 
         `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))
@@ -212,7 +214,7 @@ class CoinApiTest {
 
     @Test
     fun `get coin server error`() {
-        val response = notFoundError<CoinEntity>()
+        val response = notFoundError<CoinDetailsEntity>()
 
         `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
             .thenReturn(Observable.just(response))

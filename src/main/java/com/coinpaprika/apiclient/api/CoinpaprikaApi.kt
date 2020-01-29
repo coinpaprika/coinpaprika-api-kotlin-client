@@ -32,7 +32,7 @@ open class CoinpaprikaApi {
         return tickerApi.getTickers(quotes)
     }
 
-    fun coin(id: String): Observable<CoinEntity> {
+    fun coin(id: String): Observable<CoinDetailsEntity> {
         return coinApi.getCoin(id)
             .map { it.body() }
     }
