@@ -12,12 +12,12 @@ class CoinApi constructor(
         .create(CoinApiContract::class.java)
 ) : CoinApiContract {
 
-    override fun getCoin(id: String): Observable<Response<CoinDetailsEntity>> {
-        return safeApiCallRaw { retrofit.getCoin(id) }
+    override suspend fun getCoin(id: String): CoinDetailsEntity {
+        return retrofit.getCoin(id)
     }
 
-    override fun getCoins(additionalFields: String?): Observable<Response<List<CoinEntity>>> {
-        return safeApiCallRaw { retrofit.getCoins(additionalFields) }
+    override suspend fun getCoins(additionalFields: String?): List<CoinEntity> {
+        return retrofit.getCoins(additionalFields)
     }
 
     override fun getEvents(id: String): Observable<Response<List<EventEntity>>> {

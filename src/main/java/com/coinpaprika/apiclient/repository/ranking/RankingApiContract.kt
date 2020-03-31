@@ -5,17 +5,15 @@
 package com.coinpaprika.apiclient.repository.ranking
 
 import com.coinpaprika.apiclient.entity.TopMoversEntity
-import io.reactivex.Observable
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface RankingApiContract {
     @GET("rankings/top10movers/")
-    fun getTop10Movers(@Query("type") type: String): Observable<Response<TopMoversEntity>>
+    suspend fun getTop10Movers(@Query("type") type: String): TopMoversEntity
 
     @GET("rankings/top-movers/")
-    fun getMovers(@Query("results_number") results: Int,
+    suspend fun getMovers(@Query("results_number") results: Int,
                   @Query("marketcap_limit") range: String
-    ): Observable<Response<TopMoversEntity>>
+    ): TopMoversEntity
 }

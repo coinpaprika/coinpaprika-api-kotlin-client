@@ -12,8 +12,8 @@ import retrofit2.http.Path
 
 interface TagApiContract {
     @GET("tags/{id}?additional_fields=coins")
-    fun getTag(@Path("id") id: String): Observable<Response<TagEntity>>
+    suspend fun getTag(@Path("id") id: String): TagEntity
 
     @GET("tags?additional_fields=coins")
-    fun getTags(): Observable<Response<List<TagEntity>>>
+    suspend fun getTags(): List<TagEntity>
 }

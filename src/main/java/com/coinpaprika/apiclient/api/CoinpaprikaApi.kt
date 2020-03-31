@@ -32,14 +32,12 @@ open class CoinpaprikaApi {
         return tickerApi.getTickers(quotes)
     }
 
-    fun coin(id: String): Observable<CoinDetailsEntity> {
+    suspend fun coin(id: String):CoinDetailsEntity {
         return coinApi.getCoin(id)
-            .map { it.body() }
     }
 
-    fun coins(): Observable<List<CoinEntity>> {
+    suspend fun coins(): List<CoinEntity> {
         return coinApi.getCoins()
-            .map { it.body() }
     }
 
     fun events(id: String): Observable<List<EventEntity>> {
@@ -62,9 +60,8 @@ open class CoinpaprikaApi {
             .map { it.body() }
     }
 
-    fun movers(type: String): Observable<TopMoversEntity> {
+    suspend fun movers(type: String): TopMoversEntity {
         return rankingApi.getTop10Movers(type)
-            .map { it.body() }
     }
 
     fun global(): Observable<GlobalStatsEntity> {
@@ -72,14 +69,12 @@ open class CoinpaprikaApi {
             .map { it.body() }
     }
 
-    fun tag(id: String): Observable<TagEntity> {
+    suspend fun tag(id: String): TagEntity {
         return tagApi.getTag(id)
-            .map { it.body() }
     }
 
-    fun tags(): Observable<List<TagEntity>> {
+    suspend fun tags(): List<TagEntity> {
         return tagApi.getTags()
-            .map { it.body() }
     }
 
     fun person(id: String): Observable<PersonEntity> {
@@ -87,9 +82,8 @@ open class CoinpaprikaApi {
             .map { it.body() }
     }
 
-    fun search(query: String): Observable<SearchEntity> {
+    suspend fun search(query: String): SearchEntity {
         return searchApi.getSearches(query)
-            .map { it.body() }
     }
 
     fun news(limit: Int): Observable<List<NewsEntity>> {
@@ -97,8 +91,7 @@ open class CoinpaprikaApi {
             .map { it.body() }
     }
 
-    fun fiats(): Observable<List<FiatEntity>> {
+    suspend fun fiats(): List<FiatEntity> {
         return fiatApi.getFiats()
-            .map { it.body() }
     }
 }
