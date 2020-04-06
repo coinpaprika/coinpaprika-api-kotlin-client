@@ -6,9 +6,6 @@ package com.coinpaprika.apiclient.repository.search
 
 import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.SearchEntity
-import com.coinpaprika.apiclient.extensions.safeApiCallRaw
-import io.reactivex.Observable
-import retrofit2.Response
 
 class SearchApi constructor(
     private var retrofit: SearchApiContract = CoinpaprikaApiFactory()
@@ -16,7 +13,7 @@ class SearchApi constructor(
         .create(SearchApiContract::class.java)
 ) : SearchApiContract {
 
-    override fun getSearches(query: String): Observable<Response<SearchEntity>> {
-        return safeApiCallRaw { retrofit.getSearches(query) }
+    override suspend fun getSearches(query: String): SearchEntity {
+        return retrofit.getSearches(query)
     }
 }

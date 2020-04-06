@@ -11,10 +11,10 @@ import retrofit2.http.*
 
 interface CoinApiContract {
     @GET("coins/{id}")
-    fun getCoin(@Path("id") id: String): Observable<Response<CoinDetailsEntity>>
+    suspend fun getCoin(@Path("id") id: String): CoinDetailsEntity
 
     @GET("coins")
-    fun getCoins(@Query("additionalFields") additionalFields: String? = null): Observable<Response<List<CoinEntity>>>
+    suspend fun getCoins(@Query("additionalFields") additionalFields: String? = null): List<CoinEntity>
 
     @GET("coins/{id}/events/")
     fun getEvents(@Path("id") id: String): Observable<Response<List<EventEntity>>>
