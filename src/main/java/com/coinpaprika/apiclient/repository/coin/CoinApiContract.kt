@@ -14,7 +14,7 @@ interface CoinApiContract {
     suspend fun getCoin(@Path("id") id: String): CoinDetailsEntity
 
     @GET("coins")
-    suspend fun getCoins(@Query("additionalFields") additionalFields: String? = null): List<CoinEntity>
+    suspend fun getCoins(@Query("additional_fields") additionalFields: String? = null): List<CoinEntity>
 
     @GET("coins/{id}/events/")
     fun getEvents(@Path("id") id: String): Observable<Response<List<EventEntity>>>
