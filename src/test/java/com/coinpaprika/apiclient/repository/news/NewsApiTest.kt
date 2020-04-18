@@ -7,8 +7,6 @@ import com.coinpaprika.apiclient.exception.TooManyRequestsError
 import com.coinpaprika.apiclient.repository.notFoundError
 import com.coinpaprika.apiclient.repository.tooManyRequestsError
 import io.reactivex.Observable
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given

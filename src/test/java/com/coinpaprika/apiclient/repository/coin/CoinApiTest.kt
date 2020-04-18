@@ -7,6 +7,8 @@ import com.coinpaprika.apiclient.exception.TooManyRequestsError
 import com.coinpaprika.apiclient.repository.notFoundError
 import com.coinpaprika.apiclient.repository.tooManyRequestsError
 import io.reactivex.Observable
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
@@ -33,35 +35,24 @@ class CoinApiTest {
     private lateinit var mockTweet: TweetEntity
 
     @Test
-    fun `get coin happy case`() {
+    fun `get coin happy case`() = runBlocking {
         val coin = mockDetailsCoin
-        val response = Response.success(coin)
 
-        `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
-            .thenReturn(Observable.just(response))
+        `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID)).thenReturn(coin)
 
         val client = CoinApi(mockApi)
-        client.getCoin(FAKE_CRYPTOCURRENCY_ID)
-            .map { it.body() }
-            .test()
-            .assertResult(coin)
-            .assertComplete()
+        assertEquals(coin, client.getCoin(FAKE_CRYPTOCURRENCY_ID))
     }
 
     @Test
-    fun `get coins happy case`() {
+    fun `get coins happy case`() = runBlocking {
         val coins = listOf(mockCoin)
-        val response = Response.success(coins)
 
-        `when`(mockApi.getCoins())
-            .thenReturn(Observable.just(response))
+        `when`(mockApi.getCoins()).thenReturn(coins)
 
         val client = CoinApi(mockApi)
-        client.getCoins()
-            .map { it.body() }
-            .test()
-            .assertResult(coins)
-            .assertComplete()
+
+        assertEquals(coins, client.getCoins())
     }
 
     @Test
@@ -69,8 +60,7 @@ class CoinApiTest {
         val events = listOf(mockEvent)
         val response = Response.success(events)
 
-        `when`(mockApi.getEvents(FAKE_CRYPTOCURRENCY_ID))
-            .thenReturn(Observable.just(response))
+        `when`(mockApi.getEvents(FAKE_CRYPTOCURRENCY_ID)).thenReturn(Observable.just(response))
 
         val client = CoinApi(mockApi)
         client.getEvents(FAKE_CRYPTOCURRENCY_ID)
@@ -126,34 +116,6 @@ class CoinApiTest {
             .test()
             .assertResult(tweets)
             .assertComplete()
-    }
-
-    @Test
-    fun `get coin too many requests error`() {
-        val response = tooManyRequestsError<CoinDetailsEntity>()
-
-        `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
-            .thenReturn(Observable.just(response))
-
-        val client = CoinApi(mockApi)
-        client.getCoin(FAKE_CRYPTOCURRENCY_ID)
-            .test()
-            .assertError(TooManyRequestsError::class.java)
-            .assertNotComplete()
-    }
-
-    @Test
-    fun `get coins too many requests error`() {
-        val response = tooManyRequestsError<List<CoinEntity>>()
-
-        `when`(mockApi.getCoins())
-            .thenReturn(Observable.just(response))
-
-        val client = CoinApi(mockApi)
-        client.getCoins()
-            .test()
-            .assertError(TooManyRequestsError::class.java)
-            .assertNotComplete()
     }
 
     @Test
@@ -213,34 +175,6 @@ class CoinApiTest {
     }
 
     @Test
-    fun `get coin server error`() {
-        val response = notFoundError<CoinDetailsEntity>()
-
-        `when`(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
-            .thenReturn(Observable.just(response))
-
-        val client = CoinApi(mockApi)
-        client.getCoin(FAKE_CRYPTOCURRENCY_ID)
-            .test()
-            .assertError(ServerConnectionError::class.java)
-            .assertNotComplete()
-    }
-
-    @Test
-    fun `get coins server error`() {
-        val response = notFoundError<List<CoinEntity>>()
-
-        `when`(mockApi.getCoins())
-            .thenReturn(Observable.just(response))
-
-        val client = CoinApi(mockApi)
-        client.getCoins()
-            .test()
-            .assertError(ServerConnectionError::class.java)
-            .assertNotComplete()
-    }
-
-    @Test
     fun `get events server error`() {
         val response = notFoundError<List<EventEntity>>()
 
@@ -293,34 +227,6 @@ class CoinApiTest {
         client.getTweets(FAKE_CRYPTOCURRENCY_ID)
             .test()
             .assertError(ServerConnectionError::class.java)
-            .assertNotComplete()
-    }
-
-    @Test
-    fun `get coin network connection error`() {
-        given(mockApi.getCoin(FAKE_CRYPTOCURRENCY_ID))
-            .willAnswer {
-                throw NetworkConnectionException()
-            }
-
-        val client = CoinApi(mockApi)
-        client.getCoin(FAKE_CRYPTOCURRENCY_ID)
-            .test()
-            .assertError(NetworkConnectionException::class.java)
-            .assertNotComplete()
-    }
-
-    @Test
-    fun `get coins network connection error`() {
-        given(mockApi.getCoins())
-            .willAnswer {
-                throw NetworkConnectionException()
-            }
-
-        val client = CoinApi(mockApi)
-        client.getCoins()
-            .test()
-            .assertError(NetworkConnectionException::class.java)
             .assertNotComplete()
     }
 
