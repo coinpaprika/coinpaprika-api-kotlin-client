@@ -11,7 +11,7 @@ ext {
     siteUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-client'
     gitUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-client.git'
 
-    libraryVersion = '0.3.4'
+    libraryVersion = '0.3.5'
 
     developerId = 'coinpaprika'
     developerName = 'CoinPaprika'
@@ -26,9 +26,6 @@ group = publishedGroupId
 version = libraryVersion
 
 def pomConfig = {
-    groupId publishedGroupId
-    artifactId artifact
-
     name libraryName
     description libraryDescription
     url siteUrl

@@ -1,6 +1,7 @@
 ext {
     // Kotlin
     kotlinVersion = '1.3.61'
+    kotlinCoroutinesVersion = '1.3.5'
 
     // Reactive programming
     rxKotlinVersion = '2.4.0'
@@ -22,6 +23,7 @@ ext {
     apiDependencies = [
             // Kotlin
             kotlinJdk:              "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
+            kotlinCoroutines:       "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutinesVersion}",
 
             // Reactive programming
             rxKotlin:               "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",

@@ -16,11 +16,11 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.BDDMockito.given
 
 
-@RunWith(MockitoJUnitRunner::class)
+//@RunWith(MockitoJUnitRunner::class)
 class TickerApiTest {
 
-    @Mock private lateinit var mockApi: TickerApiContract
-    @Mock lateinit var mockTicker: TickerEntity
+//    @Mock private lateinit var mockApi: TickerApiContract
+//    @Mock lateinit var mockTicker: TickerEntity
 // TODO rewrite tests for coroutines
 //    @Test
 //    fun `get ticker happy case`() {
