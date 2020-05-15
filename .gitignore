@@ -9,3 +9,10 @@
 .idea/libraries
 .idea/caches
 /apiclient.iml
+# Local configuration file (sdk path, etc)
+local.properties
+# Gradle files
+.gradle/
+# Generated files
+bin/
+gen/

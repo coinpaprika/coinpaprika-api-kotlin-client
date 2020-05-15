@@ -28,6 +28,6 @@ interface CoinApiContract {
     @GET("coins/{id}/twitter/")
     fun getTweets(@Path("id") id: String): Observable<Response<List<TweetEntity>>>
 
-    @POST("coins/{id}/events/")
+    @POST("coins/{id}/events")
     fun addEvent(@Path("id") cryptoId: String, @Body event: EventEntity): Observable<Response<Void>>
 }
