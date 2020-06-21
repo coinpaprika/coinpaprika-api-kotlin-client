@@ -10,6 +10,5 @@ data class CoinEntity(
     @SerializedName("is_new") val isNew: Boolean,
     @SerializedName("is_active") val isActive: Boolean,
     @SerializedName("type") val type: CoinType,
-    @SerializedName("contract") val contract: String?,
-    @SerializedName("platform") val platform: String?
+    @SerializedName("contracts") val contracts: List<ContractEntity>?
 )
