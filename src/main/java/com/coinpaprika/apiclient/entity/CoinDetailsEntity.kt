@@ -22,6 +22,7 @@ data class CoinDetailsEntity(
     @SerializedName("type") val type: String,
     @SerializedName("team") val team: List<TeamMemberEntity>?,
     @SerializedName("links") val links: LinksEntity?,
+    @SerializedName("links_extended") val linksExtended: List<LinkExtendedEntity>?,
     @SerializedName("whitepaper") val whitepaper: WhitepaperEntity?,
     @SerializedName("last_data_at") val lastDataUpdate: String?
 )
