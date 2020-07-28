@@ -5,20 +5,20 @@ ext {
 
     // Reactive programming
     rxKotlinVersion = '2.4.0'
-    rxJavaVersion = '2.2.13'
+    rxJavaVersion = '2.2.19'
     rxAndroidVersion = '2.1.1'
     retrofitRxJavaAdapterVersion = '1.0.0'
 
     // Networking
-    retrofitVersion = '2.6.2'
-    retrofitConverterScalarsVersion = '2.6.2'
-    gsonConverterVersion = '2.6.2'
+    retrofitVersion = '2.9.0'
+    retrofitConverterScalarsVersion = '2.9.0'
+    gsonConverterVersion = '2.9.0'
     gsonVersion = '2.8.6'
-    loggingInterceptorVersion = '4.2.2'
+    loggingInterceptorVersion = '4.8.0'
 
     // Testing
-    jUnitVersion = '4.12'
-    mockitoVersion = '3.2.4'
+    jUnitVersion = '4.13'
+    mockitoVersion = '3.4.4'
 
     apiDependencies = [
             // Kotlin

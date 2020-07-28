@@ -18,6 +18,7 @@ data class CoinDetailsEntity(
     @SerializedName("proof_type") val proofType: String?,
     @SerializedName("org_structure") val organizationStructure: String?,
     @SerializedName("hash_algorithm") val algorithm: String?,
+    @SerializedName("contracts") val contracts: List<ContractEntity>?,
     @SerializedName("tags") val tags: List<TagEntity>?,
     @SerializedName("type") val type: String,
     @SerializedName("team") val team: List<TeamMemberEntity>?,
