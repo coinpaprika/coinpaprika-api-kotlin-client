@@ -1,7 +1,7 @@
 package com.coinpaprika.apiclient.repository.tag
 
 import com.coinpaprika.apiclient.entity.TagEntity
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith

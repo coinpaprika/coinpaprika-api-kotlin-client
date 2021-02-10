@@ -1,7 +1,7 @@
 package com.coinpaprika.apiclient.repository.search
 
 import com.coinpaprika.apiclient.entity.SearchEntity
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
