@@ -16,10 +16,10 @@ import java.util.concurrent.TimeUnit
 fun defaultClient(): OkHttpClient.Builder {
     return OkHttpClient.Builder()
         .protocols(listOf(Protocol.HTTP_1_1, Protocol.HTTP_2))
-        .writeTimeout(20000, TimeUnit.MILLISECONDS)
-        .readTimeout(10000, TimeUnit.MILLISECONDS)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
         .retryOnConnectionFailure(true)
-        .connectTimeout(15000, TimeUnit.MILLISECONDS)
         .connectionPool(ConnectionPool(0, 1, TimeUnit.NANOSECONDS))
 }
 
