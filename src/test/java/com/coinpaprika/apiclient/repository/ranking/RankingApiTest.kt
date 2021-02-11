@@ -1,8 +1,8 @@
 package com.coinpaprika.apiclient.repository.ranking
 
 import com.coinpaprika.apiclient.entity.TopMoversEntity
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
