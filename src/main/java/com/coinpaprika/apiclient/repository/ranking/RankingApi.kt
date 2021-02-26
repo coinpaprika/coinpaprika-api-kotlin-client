@@ -1,19 +1,14 @@
 package com.coinpaprika.apiclient.repository.ranking
 
-import com.coinpaprika.apiclient.api.CoinpaprikaApiFactory
 import com.coinpaprika.apiclient.entity.TopMoversEntity
 
-class RankingApi constructor(
-    private var retrofit: RankingApiContract = CoinpaprikaApiFactory()
-        .client()
-        .create(RankingApiContract::class.java)
-) : RankingApiContract {
+class RankingApi(private var contract: RankingApiContract) : RankingApiContract {
 
     override suspend fun getTop10Movers(type: String): TopMoversEntity {
-        return retrofit.getTop10Movers(type)
+        return contract.getTop10Movers(type)
     }
 
     override suspend fun getMovers(results: Int, range: String): TopMoversEntity {
-        return retrofit.getMovers(results, range)
+        return contract.getMovers(results, range)
     }
 }

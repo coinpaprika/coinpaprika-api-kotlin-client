@@ -11,18 +11,20 @@ import com.coinpaprika.apiclient.repository.search.SearchApi
 import com.coinpaprika.apiclient.repository.tag.TagApi
 import com.coinpaprika.apiclient.repository.ticker.TickerApi
 import io.reactivex.Observable
+import retrofit2.Retrofit
+import retrofit2.create
 
-open class CoinpaprikaApi {
+open class CoinpaprikaApi(retrofit: Retrofit) {
 
-    private var tickerApi = TickerApi()
-    private var coinApi = CoinApi()
-    private var tagApi = TagApi()
-    private var peopleApi = PeopleApi()
-    private var searchApi = SearchApi()
-    private var newsApi = NewsApi()
-    private var rankingApi = RankingApi()
-    private var globalApi = GlobalApi()
-    private var fiatApi = FiatApi()
+    private var tickerApi = TickerApi(retrofit.create())
+    private var coinApi = CoinApi(retrofit.create())
+    private var tagApi = TagApi(retrofit.create())
+    private var peopleApi = PeopleApi(retrofit.create())
+    private var searchApi = SearchApi(retrofit.create())
+    private var newsApi = NewsApi(retrofit.create())
+    private var rankingApi = RankingApi(retrofit.create())
+    private var globalApi = GlobalApi(retrofit.create())
+    private var fiatApi = FiatApi(retrofit.create())
 
     suspend fun ticker(id: String, quotes: String? = null): TickerEntity {
         return tickerApi.getTicker(id, quotes)

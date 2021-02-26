@@ -24,6 +24,12 @@ repositories {
 apply from: 'buildsystem/ci.gradle'
 apply from: 'buildsystem/dependencies.gradle'
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 dependencies {
     implementation apiDependencies.kotlinJdk
     implementation apiDependencies.kotlinCoroutines
