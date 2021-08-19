@@ -1,9 +1,12 @@
 package com.coinpaprika.apiclient.repository.coin
 
-import com.coinpaprika.apiclient.entity.*
+import com.coinpaprika.apiclient.entity.CoinDetailsEntity
+import com.coinpaprika.apiclient.entity.CoinEntity
+import com.coinpaprika.apiclient.entity.EventEntity
+import com.coinpaprika.apiclient.entity.ExchangeEntity
+import com.coinpaprika.apiclient.entity.MarketEntity
+import com.coinpaprika.apiclient.entity.TweetEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.exception.ServerConnectionError
-import com.coinpaprika.apiclient.exception.TooManyRequestsError
 import com.coinpaprika.apiclient.repository.notFoundError
 import com.coinpaprika.apiclient.repository.tooManyRequestsError
 import io.reactivex.Observable
@@ -15,6 +18,7 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
+import retrofit2.HttpException
 import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
@@ -128,7 +132,7 @@ class CoinApiTest {
         val client = CoinApi(mockApi)
         client.getEvents(FAKE_CRYPTOCURRENCY_ID)
             .test()
-            .assertError(TooManyRequestsError::class.java)
+            .assertError { it is HttpException && it.code() == 429 }
             .assertNotComplete()
     }
 
@@ -142,7 +146,7 @@ class CoinApiTest {
         val client = CoinApi(mockApi)
         client.getExchanges(FAKE_CRYPTOCURRENCY_ID)
             .test()
-            .assertError(TooManyRequestsError::class.java)
+            .assertError { it is HttpException && it.code() == 429 }
             .assertNotComplete()
     }
 
@@ -156,7 +160,7 @@ class CoinApiTest {
         val client = CoinApi(mockApi)
         client.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES)
             .test()
-            .assertError(TooManyRequestsError::class.java)
+            .assertError { it is HttpException && it.code() == 429 }
             .assertNotComplete()
     }
 
@@ -170,7 +174,7 @@ class CoinApiTest {
         val client = CoinApi(mockApi)
         client.getTweets(FAKE_CRYPTOCURRENCY_ID)
             .test()
-            .assertError(TooManyRequestsError::class.java)
+            .assertError { it is HttpException && it.code() == 429 }
             .assertNotComplete()
     }
 
@@ -184,7 +188,7 @@ class CoinApiTest {
         val client = CoinApi(mockApi)
         client.getEvents(FAKE_CRYPTOCURRENCY_ID)
             .test()
-            .assertError(ServerConnectionError::class.java)
+            .assertError(HttpException::class.java)
             .assertNotComplete()
     }
 
@@ -198,7 +202,7 @@ class CoinApiTest {
         val client = CoinApi(mockApi)
         client.getExchanges(FAKE_CRYPTOCURRENCY_ID)
             .test()
-            .assertError(ServerConnectionError::class.java)
+            .assertError(HttpException::class.java)
             .assertNotComplete()
     }
 
@@ -212,7 +216,7 @@ class CoinApiTest {
         val client = CoinApi(mockApi)
         client.getMarkets(FAKE_CRYPTOCURRENCY_ID, FAKE_QUOTES)
             .test()
-            .assertError(ServerConnectionError::class.java)
+            .assertError(HttpException::class.java)
             .assertNotComplete()
     }
 
@@ -226,7 +230,7 @@ class CoinApiTest {
         val client = CoinApi(mockApi)
         client.getTweets(FAKE_CRYPTOCURRENCY_ID)
             .test()
-            .assertError(ServerConnectionError::class.java)
+            .assertError(HttpException::class.java)
             .assertNotComplete()
     }
 

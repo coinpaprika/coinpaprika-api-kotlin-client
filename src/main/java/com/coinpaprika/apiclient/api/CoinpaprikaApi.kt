@@ -1,6 +1,19 @@
 package com.coinpaprika.apiclient.api
 
-import com.coinpaprika.apiclient.entity.*
+import com.coinpaprika.apiclient.entity.CoinDetailsEntity
+import com.coinpaprika.apiclient.entity.CoinEntity
+import com.coinpaprika.apiclient.entity.EventEntity
+import com.coinpaprika.apiclient.entity.ExchangeEntity
+import com.coinpaprika.apiclient.entity.FiatEntity
+import com.coinpaprika.apiclient.entity.GlobalStatsEntity
+import com.coinpaprika.apiclient.entity.MarketEntity
+import com.coinpaprika.apiclient.entity.NewsEntity
+import com.coinpaprika.apiclient.entity.PersonEntity
+import com.coinpaprika.apiclient.entity.SearchEntity
+import com.coinpaprika.apiclient.entity.TagEntity
+import com.coinpaprika.apiclient.entity.TickerEntity
+import com.coinpaprika.apiclient.entity.TopMoversEntity
+import com.coinpaprika.apiclient.entity.TweetEntity
 import com.coinpaprika.apiclient.repository.coin.CoinApi
 import com.coinpaprika.apiclient.repository.fiats.FiatApi
 import com.coinpaprika.apiclient.repository.global.GlobalApi
@@ -26,11 +39,11 @@ open class CoinpaprikaApi(retrofit: Retrofit) {
     private var globalApi = GlobalApi(retrofit.create())
     private var fiatApi = FiatApi(retrofit.create())
 
-    suspend fun ticker(id: String, quotes: String? = null): TickerEntity {
+    suspend fun ticker(id: String, quotes: List<String>): TickerEntity {
         return tickerApi.getTicker(id, quotes)
     }
 
-    suspend fun tickers(quotes: String? = null): List<TickerEntity> {
+    suspend fun tickers(quotes: List<String>): List<TickerEntity> {
         return tickerApi.getTickers(quotes)
     }
 

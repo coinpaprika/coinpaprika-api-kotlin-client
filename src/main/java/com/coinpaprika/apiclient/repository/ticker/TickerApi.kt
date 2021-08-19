@@ -5,23 +5,15 @@ import com.coinpaprika.apiclient.extensions.handleCall
 
 class TickerApi(private val contract: TickerApiContract) {
 
-    suspend fun getTicker(id: String, quotes: String? = null): TickerEntity {
+    suspend fun getTicker(id: String, quotes: List<String>): TickerEntity {
         return handleCall {
-            if (quotes != null) {
-                contract.getTicker(id, quotes)
-            } else {
-                contract.getTicker(id)
-            }
+            contract.getTicker(id, quotes.joinToString(","))
         }
     }
 
-    suspend fun getTickers(quotes: String? = null): List<TickerEntity> {
+    suspend fun getTickers(quotes: List<String>): List<TickerEntity> {
         return handleCall {
-            if (quotes != null) {
-                contract.getTickers(quotes)
-            } else {
-                contract.getTickers()
-            }
+            contract.getTickers(quotes.joinToString(","))
         }
     }
 }
