@@ -45,19 +45,16 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 dependencies {
-    implementation apiDependencies.kotlinJdk
-    implementation apiDependencies.kotlinCoroutines
+    api apiDependencies.kotlinCoroutines
 
     // Networking
+    api apiDependencies.okhttp
     api apiDependencies.retrofit
-    implementation apiDependencies.retrofitScalars
-    implementation apiDependencies.gson
+    api apiDependencies.gson
     implementation apiDependencies.gsonConverter
-    implementation apiDependencies.loggingInterceptor
 
     // Reactive programming
-    implementation apiDependencies.rxKotlin
-    implementation apiDependencies.rxJava
+    api apiDependencies.rxJava
     implementation apiDependencies.retrofitRxJavaAdapter
 
     // Testing
