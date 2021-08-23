@@ -2,8 +2,6 @@ package com.coinpaprika.apiclient.repository.global
 
 import com.coinpaprika.apiclient.entity.GlobalStatsEntity
 import com.coinpaprika.apiclient.exception.NetworkConnectionException
-import com.coinpaprika.apiclient.exception.ServerConnectionError
-import com.coinpaprika.apiclient.exception.TooManyRequestsError
 import com.coinpaprika.apiclient.repository.notFoundError
 import com.coinpaprika.apiclient.repository.tooManyRequestsError
 import io.reactivex.Observable
@@ -13,6 +11,7 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
+import retrofit2.HttpException
 import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
@@ -47,7 +46,7 @@ class NewsApiTest {
         val client = GlobalApi(mockApi)
         client.getGlobal()
             .test()
-            .assertError(TooManyRequestsError::class.java)
+            .assertError { it is HttpException && it.code() == 429 }
             .assertNotComplete()
     }
 
@@ -61,7 +60,7 @@ class NewsApiTest {
         val client = GlobalApi(mockApi)
         client.getGlobal()
             .test()
-            .assertError(ServerConnectionError::class.java)
+            .assertError(HttpException::class.java)
             .assertNotComplete()
     }
 

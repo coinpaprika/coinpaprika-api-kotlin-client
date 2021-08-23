@@ -8,8 +8,13 @@ import retrofit2.http.Query
 
 interface TickerApiContract {
     @GET("tickers/{id}/")
-    suspend fun getTicker(@Path("id") id: String, @Query("quotes") quotes: String = "USD,BTC,ETH,PLN"): Response<TickerEntity>
+    suspend fun getTicker(
+        @Path("id") id: String,
+        @Query("quotes") quotes: String
+    ): Response<TickerEntity>
 
     @GET("tickers")
-    suspend fun getTickers(@Query("quotes") quotes: String = "USD,BTC,ETH"): Response<List<TickerEntity>>
+    suspend fun getTickers(
+        @Query("quotes") quotes: String
+    ): Response<List<TickerEntity>>
 }
