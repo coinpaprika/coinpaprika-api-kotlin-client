@@ -4,13 +4,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
     }
 }
 plugins {
     id "java"
-    id "org.jetbrains.kotlin.jvm" version "1.4.30"
+    id "org.jetbrains.kotlin.jvm" version "1.5.21"
     id "maven-publish"
+    id "com.github.ben-manes.versions" version "0.39.0"
+    id 'com.autonomousapps.dependency-analysis' version "0.76.0"
 }
 
 repositories {
@@ -21,6 +23,18 @@ repositories {
 apply from: 'buildsystem/ci.gradle'
 apply from: 'buildsystem/dependencies.gradle'
 
+def isNonStable = { String version ->
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
+}
+
+tasks.named("dependencyUpdates").configure {
+    rejectVersionIf {
+        isNonStable(it.candidate.version)
+    }
+}
+
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
         jvmTarget = "1.8"
@@ -28,19 +42,16 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 dependencies {
-    implementation apiDependencies.kotlinJdk
-    implementation apiDependencies.kotlinCoroutines
+    api apiDependencies.kotlinCoroutines
 
     // Networking
+    api apiDependencies.okhttp
     api apiDependencies.retrofit
-    implementation apiDependencies.retrofitScalars
-    implementation apiDependencies.gson
+    api apiDependencies.gson
     implementation apiDependencies.gsonConverter
-    implementation apiDependencies.loggingInterceptor
 
     // Reactive programming
-    implementation apiDependencies.rxKotlin
-    implementation apiDependencies.rxJava
+    api apiDependencies.rxJava
     implementation apiDependencies.retrofitRxJavaAdapter
 
     // Testing

@@ -1,41 +1,35 @@
 ext {
     // Kotlin
-    kotlinVersion = '1.4.30'
-    kotlinCoroutinesVersion = '1.3.5'
+    kotlinCoroutinesVersion = '1.5.1'
 
     // Reactive programming
-    rxKotlinVersion = '2.4.0'
-    rxJavaVersion = '2.2.19'
+    rxJavaVersion = '2.2.21'
     rxAndroidVersion = '2.1.1'
     retrofitRxJavaAdapterVersion = '1.0.0'
 
     // Networking
+    okhttpVersion = '4.9.1'
     retrofitVersion = '2.9.0'
-    retrofitConverterScalarsVersion = '2.9.0'
     gsonConverterVersion = '2.9.0'
-    gsonVersion = '2.8.6'
-    loggingInterceptorVersion = '4.8.0'
+    gsonVersion = '2.8.8'
 
     // Testing
-    jUnitVersion = '4.13'
-    mockitoVersion = '3.4.4'
+    jUnitVersion = '4.13.2'
+    mockitoVersion = '3.12.1'
 
     apiDependencies = [
             // Kotlin
-            kotlinJdk:              "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
             kotlinCoroutines:       "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutinesVersion}",
 
             // Reactive programming
-            rxKotlin:               "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
             rxJava:                 "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
             retrofitRxJavaAdapter:  "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${retrofitRxJavaAdapterVersion}",
 
             // Networking
+            okhttp:                 "com.squareup.okhttp3:okhttp:${okhttpVersion}",
             retrofit:               "com.squareup.retrofit2:retrofit:${retrofitVersion}",
-            retrofitScalars:        "com.squareup.retrofit2:converter-scalars:${retrofitConverterScalarsVersion}",
             gson:                   "com.google.code.gson:gson:${gsonVersion}",
             gsonConverter:          "com.squareup.retrofit2:converter-gson:${gsonConverterVersion}",
-            loggingInterceptor:     "com.squareup.okhttp3:logging-interceptor:${loggingInterceptorVersion}",
 
             // Testing
             junit:                  "junit:junit:${jUnitVersion}",
