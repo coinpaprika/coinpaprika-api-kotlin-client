@@ -11,7 +11,7 @@ ext {
     siteUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-client'
     gitUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-client.git'
 
-    libraryVersion = '0.4.4'
+    libraryVersion = '0.4.5'
 
     developerId = 'coinpaprika'
     developerName = 'CoinPaprika'
@@ -59,13 +59,6 @@ artifacts {
     archives sourcesJar
 }
 
-Properties properties = new Properties()
-try {
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-} catch (FileNotFoundException ex) {
-    logger.warn('FileNotFoundException: local.properties file not found. Upload to bintray not possible.')
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -75,27 +68,6 @@ publishing {
                 def root = asNode()
                 root.children().last() + pomConfig
             }
-        }
-    }
-}
-
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    pkg {
-        repo = bintrayRepo
-        name = bintrayName
-        desc = libraryDescription
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = allLicenses
-        dryRun = false
-        publish = true
-        override = false
-        publicDownloadNumbers = true
-        version {
-            desc = libraryDescription
         }
     }
 }
