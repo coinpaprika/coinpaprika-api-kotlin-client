@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         google()
-        jcenter()
         mavenCentral()
     }
     dependencies {
@@ -11,13 +10,11 @@ buildscript {
 plugins {
     id "java"
     id "org.jetbrains.kotlin.jvm" version "1.4.30"
-    id "com.jfrog.bintray" version "1.7.3"
     id "maven-publish"
 }
 
 repositories {
     google()
-    jcenter()
     mavenCentral()
 }
 
