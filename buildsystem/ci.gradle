@@ -11,7 +11,7 @@ ext {
     siteUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-client'
     gitUrl = 'https://github.com/coinpaprika/coinpaprika-api-kotlin-client.git'
 
-    libraryVersion = '0.4.4'
+    libraryVersion = '0.4.5'
 
     developerId = 'coinpaprika'
     developerName = 'CoinPaprika'
