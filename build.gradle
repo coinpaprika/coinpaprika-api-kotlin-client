@@ -5,13 +5,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
     }
 }
 plugins {
     id "java"
-    id "org.jetbrains.kotlin.jvm" version "1.4.30"
-    id "com.jfrog.bintray" version "1.7.3"
+    id "org.jetbrains.kotlin.jvm" version "1.5.21"
+    id "com.jfrog.bintray" version "1.8.5"
     id "maven-publish"
     id "com.github.ben-manes.versions" version "0.39.0"
 }
@@ -24,6 +24,18 @@ repositories {
 
 apply from: 'buildsystem/ci.gradle'
 apply from: 'buildsystem/dependencies.gradle'
+
+def isNonStable = { String version ->
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
+}
+
+tasks.named("dependencyUpdates").configure {
+    rejectVersionIf {
+        isNonStable(it.candidate.version)
+    }
+}
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
