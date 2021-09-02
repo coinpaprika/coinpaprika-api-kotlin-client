@@ -1,4 +1,4 @@
-package com.coinpaprika.apiclient.repository.people
+package com.coinpaprika.apiclient
 
 import com.coinpaprika.apiclient.entity.PersonEntity
 import com.coinpaprika.apiclient.entity.TweetEntity

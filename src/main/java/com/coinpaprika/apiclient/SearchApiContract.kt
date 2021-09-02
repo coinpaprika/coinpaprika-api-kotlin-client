@@ -1,4 +1,4 @@
-package com.coinpaprika.apiclient.repository.search
+package com.coinpaprika.apiclient
 
 import com.coinpaprika.apiclient.entity.SearchEntity
 import retrofit2.http.GET

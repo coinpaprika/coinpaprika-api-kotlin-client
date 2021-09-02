@@ -1,4 +1,4 @@
-package com.coinpaprika.apiclient.repository.ticker
+package com.coinpaprika.apiclient
 
 import com.coinpaprika.apiclient.entity.TickerEntity
 import retrofit2.Response

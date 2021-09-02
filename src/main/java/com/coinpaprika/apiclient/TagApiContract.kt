@@ -1,4 +1,4 @@
-package com.coinpaprika.apiclient.repository.tag
+package com.coinpaprika.apiclient
 
 import com.coinpaprika.apiclient.entity.TagEntity
 import io.reactivex.Observable

@@ -1,4 +1,4 @@
-package com.coinpaprika.apiclient.repository.ranking
+package com.coinpaprika.apiclient
 
 import com.coinpaprika.apiclient.entity.TopMoversEntity
 import retrofit2.http.GET

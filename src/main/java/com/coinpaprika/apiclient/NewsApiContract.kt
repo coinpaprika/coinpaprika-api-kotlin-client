@@ -1,4 +1,4 @@
-package com.coinpaprika.apiclient.repository.news
+package com.coinpaprika.apiclient
 
 import com.coinpaprika.apiclient.entity.NewsEntity
 import io.reactivex.Observable

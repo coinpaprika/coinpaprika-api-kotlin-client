@@ -1,4 +1,4 @@
-package com.coinpaprika.apiclient.repository.global
+package com.coinpaprika.apiclient
 
 import com.coinpaprika.apiclient.entity.GlobalStatsEntity
 import io.reactivex.Observable

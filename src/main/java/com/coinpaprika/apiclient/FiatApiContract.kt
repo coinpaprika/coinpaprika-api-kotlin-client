@@ -1,4 +1,4 @@
-package com.coinpaprika.apiclient.repository.fiats
+package com.coinpaprika.apiclient
 
 import com.coinpaprika.apiclient.entity.FiatEntity
 import retrofit2.http.GET
