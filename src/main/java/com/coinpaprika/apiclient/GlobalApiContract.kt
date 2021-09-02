@@ -7,5 +7,5 @@ import retrofit2.http.GET
 
 interface GlobalApiContract {
     @GET("global")
-    fun getGlobal(): Observable<Response<GlobalStatsEntity>>
+    fun getGlobal(): Observable<GlobalStatsEntity>
 }
