@@ -1,7 +1,3 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 12:05
- */
-
 package com.coinpaprika.apiclient.repository.tag
 
 import com.coinpaprika.apiclient.entity.TagEntity

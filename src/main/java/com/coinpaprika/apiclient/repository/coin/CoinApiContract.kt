@@ -1,7 +1,3 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 12:04
- */
-
 package com.coinpaprika.apiclient.repository.coin
 
 import com.coinpaprika.apiclient.entity.*

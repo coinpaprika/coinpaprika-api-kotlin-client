@@ -1,7 +1,3 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 12:06
- */
-
 package com.coinpaprika.apiclient.repository.people
 
 import com.coinpaprika.apiclient.entity.PersonEntity
