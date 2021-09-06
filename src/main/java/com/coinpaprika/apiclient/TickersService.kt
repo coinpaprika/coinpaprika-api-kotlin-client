@@ -11,10 +11,10 @@ interface TickersService {
     suspend fun getTicker(
         @Path("id") id: String,
         @Query("quotes") quotes: String
-    ): Response<TickerEntity>
+    ): TickerEntity
 
     @GET("tickers")
     suspend fun getTickers(
         @Query("quotes") quotes: String
-    ): Response<List<TickerEntity>>
+    ): List<TickerEntity>
 }
