@@ -1,13 +1,13 @@
-/*
- * Created by Piotr Kostecki on 28.12.18 17:07
- */
-
 package com.coinpaprika.apiclient.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-data class MoverEntity(val id: String,
-                       val name: String,
-                       val symbol: String,
-                       val rank: Int,
-                       @SerializedName("percent_change") val percentChange: Double)
+@JsonClass(generateAdapter = true)
+data class MoverEntity(
+    val id: String,
+    val name: String,
+    val symbol: String,
+    val rank: Int,
+    @Json(name = "percent_change") val percentChange: Double
+)

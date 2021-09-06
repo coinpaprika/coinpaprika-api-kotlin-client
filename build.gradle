@@ -4,12 +4,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
     }
 }
 plugins {
     id "java"
-    id "org.jetbrains.kotlin.jvm" version "1.5.21"
+    id "org.jetbrains.kotlin.jvm" version "1.5.30"
+    id "org.jetbrains.kotlin.kapt" version "1.5.30"
     id "maven-publish"
     id "com.github.ben-manes.versions" version "0.39.0"
     id 'com.autonomousapps.dependency-analysis' version "0.76.0"
@@ -18,6 +19,11 @@ plugins {
 repositories {
     google()
     mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 apply from: 'buildsystem/ci.gradle'
@@ -41,7 +47,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 dependencies {
-    // Networking
     api 'com.squareup.retrofit2:retrofit:2.9.0'
-    api 'com.google.code.gson:gson:2.8.8'
+    api 'com.squareup.moshi:moshi-kotlin:1.12.0'
+    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.12.0'
 }

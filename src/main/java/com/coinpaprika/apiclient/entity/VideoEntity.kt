@@ -1,19 +1,21 @@
 package com.coinpaprika.apiclient.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class VideoEntity(
-    @SerializedName("author_url") val authorUrl: String,
-    @SerializedName("author_name") val authorName: String,
+    @Json(name = "author_url") val authorUrl: String,
+    @Json(name = "author_name") val authorName: String,
     val height: Int,
     val width: Int,
     val type: String,
-    @SerializedName("provider_url") val providerUrl: String,
-    @SerializedName("provider_name") val providerName: String,
+    @Json(name = "provider_url") val providerUrl: String,
+    @Json(name = "provider_name") val providerName: String,
     val html: String,
     val title: String,
-    @SerializedName("thumbnail_url") val thumbnailUrl: String,
-    @SerializedName("thumbnail_height") val thumbnailHeight: Int,
-    @SerializedName("thumbnail_width") val thumbnailWidth: Int,
+    @Json(name = "thumbnail_url") val thumbnailUrl: String,
+    @Json(name = "thumbnail_height") val thumbnailHeight: Int,
+    @Json(name = "thumbnail_width") val thumbnailWidth: Int,
     val version: String
 )
