@@ -12,7 +12,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface CoinApiContract {
+interface CoinsService {
     @GET("coins/{id}")
     suspend fun getCoin(
         @Path("id") id: String

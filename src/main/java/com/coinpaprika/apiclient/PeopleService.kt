@@ -5,7 +5,7 @@ import com.coinpaprika.apiclient.entity.TweetEntity
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface PeopleApiContract {
+interface PeopleService {
     @GET("people/{id}/")
     suspend fun getPerson(@Path("id") id: String): PersonEntity
 

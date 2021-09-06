@@ -4,7 +4,7 @@ import com.coinpaprika.apiclient.entity.TopMoversEntity
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface RankingApiContract {
+interface RankingsService {
     @GET("rankings/top10movers/")
     suspend fun getTop10Movers(
         @Query("type") type: String

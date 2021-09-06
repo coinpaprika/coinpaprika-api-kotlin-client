@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface TickerApiContract {
+interface TickersService {
     @GET("tickers/{id}/")
     suspend fun getTicker(
         @Path("id") id: String,
