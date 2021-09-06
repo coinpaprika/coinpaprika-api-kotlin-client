@@ -1,12 +1,4 @@
 ext {
-    // Kotlin
-    kotlinCoroutinesVersion = '1.5.1'
-
-    // Reactive programming
-    rxJavaVersion = '2.2.21'
-    rxAndroidVersion = '2.1.1'
-    retrofitRxJavaAdapterVersion = '1.0.0'
-
     // Networking
     okhttpVersion = '4.9.1'
     retrofitVersion = '2.9.0'
@@ -18,13 +10,6 @@ ext {
     mockitoVersion = '3.12.1'
 
     apiDependencies = [
-            // Kotlin
-            kotlinCoroutines:       "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutinesVersion}",
-
-            // Reactive programming
-            rxJava:                 "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
-            retrofitRxJavaAdapter:  "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${retrofitRxJavaAdapterVersion}",
-
             // Networking
             okhttp:                 "com.squareup.okhttp3:okhttp:${okhttpVersion}",
             retrofit:               "com.squareup.retrofit2:retrofit:${retrofitVersion}",

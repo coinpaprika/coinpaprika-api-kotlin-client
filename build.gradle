@@ -42,17 +42,11 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 dependencies {
-    api apiDependencies.kotlinCoroutines
-
     // Networking
     api apiDependencies.okhttp
     api apiDependencies.retrofit
     api apiDependencies.gson
     implementation apiDependencies.gsonConverter
-
-    // Reactive programming
-    api apiDependencies.rxJava
-    implementation apiDependencies.retrofitRxJavaAdapter
 
     // Testing
     testImplementation apiDependencies.junit

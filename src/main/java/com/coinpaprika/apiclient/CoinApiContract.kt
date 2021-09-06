@@ -6,8 +6,6 @@ import com.coinpaprika.apiclient.entity.EventEntity
 import com.coinpaprika.apiclient.entity.ExchangeEntity
 import com.coinpaprika.apiclient.entity.MarketEntity
 import com.coinpaprika.apiclient.entity.TweetEntity
-import io.reactivex.Completable
-import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -26,9 +24,9 @@ interface CoinApiContract {
     ): List<CoinEntity>
 
     @GET("coins/{id}/events/")
-    fun getEvents(
+    suspend fun getEvents(
         @Path("id") id: String
-    ): Single<List<EventEntity>>
+    ): List<EventEntity>
 
     @GET("coins/{id}/exchanges/")
     suspend fun getExchanges(
@@ -36,19 +34,19 @@ interface CoinApiContract {
     ): List<ExchangeEntity>
 
     @GET("coins/{id}/markets/")
-    fun getMarkets(
+    suspend fun getMarkets(
         @Path("id") id: String,
         @Query("quotes") quotes: String
-    ): Single<List<MarketEntity>>
+    ): List<MarketEntity>
 
     @GET("coins/{id}/twitter/")
-    fun getTweets(
+    suspend fun getTweets(
         @Path("id") id: String
-    ): Single<List<TweetEntity>>
+    ): List<TweetEntity>
 
     @POST("coins/{id}/events")
-    fun addEvent(
+    suspend fun addEvent(
         @Path("id") cryptoId: String,
         @Body event: EventEntity
-    ): Completable
+    )
 }
