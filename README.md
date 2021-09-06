@@ -6,7 +6,8 @@
 [![Platform](https://img.shields.io/badge/Platform-Android-blue.svg?style=flat)](https://developer.android.com/about/)
 ![Kotlin 1.5.30](https://img.shields.io/badge/Kotlin-1.5.30-orange.svg)
 
-This library is written in Kotlin and provides the way to retrieve data from [Coinpaprika.com API](https://api.coinpaprika.com/) with ease.
+This library is written in Kotlin and provides a way to retrieve data from [Coinpaprika.com API](https://api.coinpaprika.com/).
+It uses [Retrofit](https://square.github.io/retrofit/), [Moshi](https://github.com/square/moshi) and [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html).
 
 ## Installation
 1. Add the following lines in your AndroidManifest.xml file
