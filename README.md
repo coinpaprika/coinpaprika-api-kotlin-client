@@ -1,10 +1,10 @@
 # Coinpaprika API Kotlin Client
 
-[![Version](https://img.shields.io/badge/Version-0.4.5-blue.svg)](https://coinpaprika.com/pl/)
+[![Version](https://img.shields.io/badge/Version-0.5.0-blue.svg)](https://coinpaprika.com/pl/)
 ![Travis-ci](https://api.travis-ci.org/coinpaprika/coinpaprika-api-kotlin-client.svg)
 [![License](https://img.shields.io/cocoapods/l/CoinpaprikaAPI.svg?style=flat)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/Platform-Android-blue.svg?style=flat)](https://developer.android.com/about/)
-![Kotlin 1.5.21](https://img.shields.io/badge/Kotlin-1.5.21-orange.svg)
+![Kotlin 1.5.21](https://img.shields.io/badge/Kotlin-1.5.30-orange.svg)
 
 This library is written in Kotlin and provides the way to retrieve data from [Coinpaprika.com API](https://api.coinpaprika.com/) with ease.
 
@@ -23,42 +23,33 @@ implementation 'com.coinpaprika:apiclient:$library_version'
 ## Usage
 [Coinpaprika](https://coinpaprika.com) delivers full market data to the world of crypto: coin prices, volumes, market caps, ATHs, return rates and more.
 
-Instantiate client and proceed with the call:
+Instantiate Retrofit service and proceed with the call:
 ```kotlin
-CoinpaprikaAPI(context)
-            .tickers()
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { next -> for (ticker in next) {
-                    i("ExampleActivity", "Ticker name is ${ticker.name} ")
-                }},
-                { error -> error.printStackTrace() })
-```
-
-### Tickers
-
-```kotlin
-CoinpaprikaAPI(context).tickers()
-    .doOnNext {
-        for (ticker in it) {
-            // ticker.id - Coin identifier, to use in ticker(id:) method
-            // ticker.name - Coin name, for example Bitcoin
-            // ticker.symbol - Coin symbol, for example BTC
-            // ticker.rank - Position in Coinpaprika ranking (by MarketCap)
-            // ticker.priceUsd - Price in USD
-            // ticker.priceBtc - Price in BTC
-            // ticker.dailyVolumeUsd - Volume from last 24h in USD
-            // ticker.marketCapUsd - Market Capitalization in USD
-            // ticker.circulatingSupply - Circulating Supply
-            // ticker.totalSupply - Total Supply
-            // ticker.maxSupply - Maximum Supply
-            // ticker.percentChange1h - Percentage price change in last 1 hour
-            // ticker.percentChange24h - Percentage price change in last 24 hours
-            // ticker.percentChange7d - Percentage price change in last 7 days
-        }
-    }
-    .doOnError { error -> /* handle an error */ }
+val retrofit = Retrofit.Builder()
+                   .baseUrl(COINPAPRIKA_BASE_URL)
+                   .addConverterFactory(MoshiConverterFactory.create())
+                   .client(OkHttpClient.Builder().build())
+                   .build()
+val tickersService: TickersService = retrofit.create()
+val tickers = tickersService.getTickers() // this function needs to be called in a coroutine
+                                          // it can throw an HttpException or an IOException
+for (ticker in tickers) {
+    println(ticker.name)
+    // ticker.id - Coin identifier, to use in ticker(id:) method
+    // ticker.name - Coin name, for example Bitcoin
+    // ticker.symbol - Coin symbol, for example BTC
+    // ticker.rank - Position in Coinpaprika ranking (by MarketCap)
+    // ticker.priceUsd - Price in USD
+    // ticker.priceBtc - Price in BTC
+    // ticker.dailyVolumeUsd - Volume from last 24h in USD
+    // ticker.marketCapUsd - Market Capitalization in USD
+    // ticker.circulatingSupply - Circulating Supply
+    // ticker.totalSupply - Total Supply
+    // ticker.maxSupply - Maximum Supply
+    // ticker.percentChange1h - Percentage price change in last 1 hour
+    // ticker.percentChange24h - Percentage price change in last 24 hours
+    // ticker.percentChange7d - Percentage price change in last 7 days
+}
 ```
 
 ## License
