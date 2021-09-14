@@ -1,8 +1,8 @@
 package com.coinpaprika.apiclient.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 enum class CoinType {
-    @SerializedName("coin") Coin,
-    @SerializedName("token") Token
+    @Json(name = "coin") Coin,
+    @Json(name = "token") Token
 }

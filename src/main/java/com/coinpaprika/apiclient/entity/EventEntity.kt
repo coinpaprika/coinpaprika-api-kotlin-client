@@ -1,13 +1,15 @@
 package com.coinpaprika.apiclient.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class EventEntity(
-    @SerializedName("date") val startDate: String,
-    @SerializedName("date_to") val endDate: String? = null,
+    @Json(name = "date") val startDate: String,
+    @Json(name = "date_to") val endDate: String? = null,
     val name: String,
     val description: String?,
-    @SerializedName("is_conference") val isConference: Boolean? = false,
+    @Json(name = "is_conference") val isConference: Boolean? = false,
     val link: String?,
-    @SerializedName("proof_image_link") val proofImageLink: String? = null
+    @Json(name = "proof_image_link") val proofImageLink: String? = null
 )

@@ -1,16 +1,10 @@
-/*
- * Created by Piotr Kostecki on 09.01.19 12:05
- */
-
-package com.coinpaprika.apiclient.repository.tag
+package com.coinpaprika.apiclient
 
 import com.coinpaprika.apiclient.entity.TagEntity
-import io.reactivex.Observable
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface TagApiContract {
+interface TagsService {
     @GET("tags/{id}?additional_fields=coins")
     suspend fun getTag(@Path("id") id: String): TagEntity
 

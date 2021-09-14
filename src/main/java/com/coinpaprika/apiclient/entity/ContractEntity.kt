@@ -1,9 +1,11 @@
 package com.coinpaprika.apiclient.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class ContractEntity(
-    @SerializedName("contract") val contract: String,
-    @SerializedName("platform") val platform: String,
-    @SerializedName("type") val type: String
+    @Json(name = "contract") val contract: String,
+    @Json(name = "platform") val platform: String,
+    @Json(name = "type") val type: String
 )
