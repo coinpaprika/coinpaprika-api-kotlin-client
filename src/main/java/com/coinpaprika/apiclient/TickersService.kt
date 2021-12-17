@@ -15,6 +15,6 @@ interface TickersService {
     @GET("tickers")
     suspend fun getTickers(
         @Query("quotes") quotes: String,
-        @Query("limit") limit: Int? = null
+        @Query("page") page: Int? = null
     ): List<TickerEntity>
 }
