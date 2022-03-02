@@ -4,16 +4,16 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
     }
 }
 plugins {
     id "java"
-    id "org.jetbrains.kotlin.jvm" version "1.5.30"
-    id "com.google.devtools.ksp" version "1.5.30-1.0.0"
+    id "org.jetbrains.kotlin.jvm" version "1.6.10"
+    id "com.google.devtools.ksp" version "1.6.10-1.0.2"
     id "maven-publish"
     id "com.github.ben-manes.versions" version "0.39.0"
-    id 'com.autonomousapps.dependency-analysis' version "0.76.0"
+    id 'com.autonomousapps.dependency-analysis' version "0.80.0"
 }
 
 repositories {
