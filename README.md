@@ -1,10 +1,10 @@
 # Coinpaprika API Kotlin Client
 
-[![Version](https://img.shields.io/badge/Version-0.5.0-blue.svg)](https://coinpaprika.com/pl/)
+[![Version](https://img.shields.io/badge/Version-0.5.2-blue.svg)](https://coinpaprika.com/pl/)
 ![Travis-ci](https://api.travis-ci.org/coinpaprika/coinpaprika-api-kotlin-client.svg)
 [![License](https://img.shields.io/cocoapods/l/CoinpaprikaAPI.svg?style=flat)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/Platform-Android-blue.svg?style=flat)](https://developer.android.com/about/)
-![Kotlin 1.5.30](https://img.shields.io/badge/Kotlin-1.5.30-orange.svg)
+![Kotlin 1.6.10](https://img.shields.io/badge/Kotlin-1.6.10-orange.svg)
 
 This library is written in Kotlin and provides a way to retrieve data from [Coinpaprika.com API](https://api.coinpaprika.com/).
 It uses [Retrofit](https://square.github.io/retrofit/), [Moshi](https://github.com/square/moshi) and [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html).
