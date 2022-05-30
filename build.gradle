@@ -4,13 +4,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21"
     }
 }
 plugins {
     id "java"
-    id "org.jetbrains.kotlin.jvm" version "1.6.10"
-    id "com.google.devtools.ksp" version "1.6.10-1.0.2"
+    id "org.jetbrains.kotlin.jvm" version "1.6.21"
+    id "com.google.devtools.ksp" version "1.6.21-1.0.5"
     id "maven-publish"
     id "com.github.ben-manes.versions" version "0.39.0"
     id 'com.autonomousapps.dependency-analysis' version "0.80.0"
@@ -19,11 +19,6 @@ plugins {
 repositories {
     google()
     mavenCentral()
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 apply from: 'buildsystem/ci.gradle'
@@ -37,12 +32,6 @@ def isNonStable = { String version ->
 tasks.named("dependencyUpdates").configure {
     rejectVersionIf {
         isNonStable(it.candidate.version)
-    }
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 }
 
