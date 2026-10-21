@@ -39,4 +39,11 @@ dependencies {
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.moshi:moshi-kotlin:1.12.0'
     ksp 'dev.zacsweers.moshix:moshi-ksp:0.14.0'
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+}
+
+test {
+    useJUnit()
 }

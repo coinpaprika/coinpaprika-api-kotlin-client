@@ -52,6 +52,17 @@ for (ticker in tickers) {
 }
 ```
 
+For any service method that takes an `id` (for example `TickersService.getTicker`,
+`CoinsService.getCoin`, `TagsService.getTag`, `PeopleService.getPerson`), wrap the
+service with `withIdValidation()` if the id ever comes from a user or another
+system. The wrapper rejects an empty id, "." and "..", and an id that contains a
+path separator, a query or fragment delimiter, a percent sign, whitespace, a
+control character or a non-ASCII character, before the request is built:
+```kotlin
+val coinsService: CoinsService = retrofit.create<CoinsService>().withIdValidation()
+val coin = coinsService.getCoin(coinId) // throws IllegalArgumentException for a bad id
+```
+
 ## License
 
 CoinpaprikaAPI is available under the MIT license. See the LICENSE file for more info.
