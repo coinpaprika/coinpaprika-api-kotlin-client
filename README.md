@@ -33,17 +33,6 @@ val retrofit = Retrofit.Builder()
 val tickersService: TickersService = retrofit.create()
 val tickers = tickersService.getTickers() // this function needs to be called in a coroutine
                                           // it can throw an HttpException or an IOException
-```
-
-For any service method that takes an `id` (for example `TickersService.getTicker`,
-`CoinsService.getCoin`, `TagsService.getTag`, `PeopleService.getPerson`), wrap the
-service with `withIdValidation()` if the id ever comes from a user or another
-system. The wrapper rejects an empty id, "." and "..", and an id that contains a
-path separator, a query or fragment delimiter, a percent sign, whitespace or a
-control character, before the request is built:
-```kotlin
-val coinsService: CoinsService = retrofit.create<CoinsService>().withIdValidation()
-val coin = coinsService.getCoin(coinId) // throws IllegalArgumentException for a bad id
 for (ticker in tickers) {
     println(ticker.name)
     // ticker.id - Coin identifier, to use in ticker(id:) method
@@ -61,6 +50,17 @@ for (ticker in tickers) {
     // ticker.percentChange24h - Percentage price change in last 24 hours
     // ticker.percentChange7d - Percentage price change in last 7 days
 }
+```
+
+For any service method that takes an `id` (for example `TickersService.getTicker`,
+`CoinsService.getCoin`, `TagsService.getTag`, `PeopleService.getPerson`), wrap the
+service with `withIdValidation()` if the id ever comes from a user or another
+system. The wrapper rejects an empty id, "." and "..", and an id that contains a
+path separator, a query or fragment delimiter, a percent sign, whitespace, a
+control character or a non-ASCII character, before the request is built:
+```kotlin
+val coinsService: CoinsService = retrofit.create<CoinsService>().withIdValidation()
+val coin = coinsService.getCoin(coinId) // throws IllegalArgumentException for a bad id
 ```
 
 ## License

@@ -41,9 +41,8 @@ private class StubPeopleService : PeopleService {
     override suspend fun getTweets(id: String) = throw DelegateCalled()
 }
 
-// Ids that must be rejected before the delegate is reached. None of these
-// names an internal API path; they are generic traversal and delimiter
-// payloads only.
+// Ids that must be rejected before the delegate is reached: traversal,
+// delimiter and Unicode look-alike payloads.
 private val badIds = listOf(
     "",
     ".",
@@ -56,7 +55,11 @@ private val badIds = listOf(
     "a#b",
     "a%b",
     "a b",
-    "a\tb"
+    "a\tb",
+    "\uFF0E\uFF0E",
+    "a\u2215b",
+    "a\uFF0Fb",
+    "\u2024\u2024"
 )
 
 class PathIdValidationTest {

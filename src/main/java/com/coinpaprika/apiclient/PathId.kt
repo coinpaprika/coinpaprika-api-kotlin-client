@@ -12,7 +12,9 @@ import java.net.URLDecoder
  * API that decodes "%2F" before resolving dot segments turns that into a
  * request to another endpoint, sent with the caller's key. Rejecting such
  * ids here, before the Retrofit call is made, removes that dependency on
- * how every hop parses the path.
+ * how every hop parses the path. Non-ASCII is refused too, so Unicode
+ * look-alikes of "." and "/" cannot stand in for them; every CoinPaprika
+ * id is ASCII.
  */
 internal object PathId {
     private val forbiddenChars = charArrayOf('/', '\\', '?', '#', '%')
@@ -29,10 +31,10 @@ internal object PathId {
         }
 
         for (ch in decoded) {
-            if (ch in forbiddenChars || ch.isWhitespace() || Character.isISOControl(ch)) {
+            if (ch.code > 0x7E || ch in forbiddenChars || ch.isWhitespace() || Character.isISOControl(ch)) {
                 throw IllegalArgumentException(
                     "Invalid id: must not contain a path separator, a query or fragment delimiter, " +
-                        "a percent sign, whitespace or a control character"
+                        "a percent sign, whitespace, a control character or a non-ASCII character"
                 )
             }
         }
