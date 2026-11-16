@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Fails the build if gradle-wrapper.jar is not an official Gradle release.
+      - uses: gradle/actions/wrapper-validation@v4
+
+      # Gradle 7.4.2 (the wrapper) runs on JDK 17 at most.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      # The tests are offline, so CI does not depend on api.coinpaprika.com.
+      - name: Build and test
+        run: ./gradlew --no-daemon build
